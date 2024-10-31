@@ -7,16 +7,16 @@ class MQTTManager {
   String broker = '192.168.137.1'; // Replace with your MQTT broker IP
   int port = 1883;
   String clientId = 'flutter_client';
+  String temperature = 'N/A';
+  String humidity = 'N/A';
 
-  // Define callback for updating UI
-  Function(String, String)? onDataReceived;
+  // Callback for UI updates
+  Function? onDataReceived;
 
-  MQTTManager() {
+  MQTTManager({this.onDataReceived}) {
     client = MqttServerClient(broker, clientId);
     client.port = port;
-
-    // Set keep alive interval
-    client.keepAlivePeriod = 20; // Set to your desired value
+    client.keepAlivePeriod = 20;
 
     // Set up callbacks
     client.onDisconnected = onDisconnected;
@@ -41,35 +41,34 @@ class MQTTManager {
       await client.connect();
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
         print('Connected to the MQTT Broker');
-        // Subscribe to topics
         subscribe('home/sensor_data');
       }
     } catch (e) {
       print('Error connecting to the MQTT Broker: $e');
+      client.disconnect();
     }
   }
 
   void subscribe(String topic) {
     client.subscribe(topic, MqttQos.atLeastOnce);
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
-      final MqttReceivedMessage<MqttMessage> message = c[0];
-      final MqttMessage mqttMessage = message.payload;
+      final MqttPublishMessage message = c[0].payload as MqttPublishMessage;
+      final String payload = MqttPublishPayload.bytesToStringAsString(message.payload.message);
 
-      // Assuming the payload is a JSON string with temperature and humidity
-      final payload = mqttMessage as MqttPublishMessage; // Cast to MqttPublishMessage
-      final String messagePayload = utf8.decode(payload.payload.message);
+      print('Received message: $payload');
+      final data = jsonDecode(payload);
 
-      if (topic == 'home/sensor_data') {
-        final data = jsonDecode(messagePayload);
-        String temperature = data['temperature'].toString();
-        String humidity = data['humidity'].toString();
+      // Parse temperature and humidity, then trigger callback
+      temperature = data['temperature']?.toString() ?? 'N/A';
+      humidity = data['humidity']?.toString() ?? 'N/A';
 
-        // Notify the UI about new data
-        if (onDataReceived != null) {
-          onDataReceived!(temperature, humidity);
-        }
+      if (onDataReceived != null) {
+        onDataReceived!();
       }
-      print('Received message: $messagePayload');
     });
+  }
+
+  void disconnect() {
+    client.disconnect();
   }
 }

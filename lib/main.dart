@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'mqtt_manager.dart';
 
 void main() {
@@ -24,27 +25,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final MQTTManager mqttManager = MQTTManager();
-  String temperature = 'N/A';
-  String humidity = 'N/A';
+  late MQTTManager mqttManager;
 
   @override
   void initState() {
     super.initState();
-
-    // Set the onDataReceived callback
-    mqttManager.onDataReceived = (String newTemperature, String newHumidity) {
-      setState(() {
-        temperature = newTemperature;
-        humidity = newHumidity;
-      });
-    };
-
+    mqttManager = MQTTManager(
+      onDataReceived: () {
+        setState(() {}); // Updates UI on new data
+      },
+    );
     mqttManager.connect();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Convert temperature and humidity values to double, with default as 0
+    double temperatureValue = double.tryParse(mqttManager.temperature) ?? 0;
+    double humidityValue = double.tryParse(mqttManager.humidity) ?? 0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('MQTT Sensor Data'),
@@ -53,16 +52,54 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Temperature: $temperature °C',
-              style: TextStyle(fontSize: 24),
+            // Circular indicator for temperature
+            CircularPercentIndicator(
+              radius: 120.0,
+              lineWidth: 13.0,
+              animation: true,
+              percent: (temperatureValue / 100).clamp(0.0, 1.0),
+              center: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${mqttManager.temperature}°C",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Temperature',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+              circularStrokeCap: CircularStrokeCap.round,
+              progressColor: Colors.orangeAccent,
+              backgroundColor: Colors.orange[100]!,
             ),
-            SizedBox(height: 20),
-            Text(
-              'Humidity: $humidity %',
-              style: TextStyle(fontSize: 24),
+            SizedBox(height: 30),
+            // Circular indicator for humidity
+            CircularPercentIndicator(
+              radius: 120.0,
+              lineWidth: 13.0,
+              animation: true,
+              percent: (humidityValue / 100).clamp(0.0, 1.0),
+              center: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${mqttManager.humidity}%",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Humidity',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+              circularStrokeCap: CircularStrokeCap.round,
+              progressColor: Colors.blueAccent,
+              backgroundColor: Colors.blue[100]!,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 mqttManager.connect();
@@ -77,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    mqttManager.client.disconnect();
+    mqttManager.disconnect();
     super.dispose();
   }
 }
