@@ -225,7 +225,7 @@ packages:
     source: hosted
     version: "0.7.2"
   typed_data:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: typed_data
       sha256: f9049c039ebfeb4cf7a7104a675823cd72dba8297f264b6637062516699fa006
@@ -249,5 +249,5 @@ packages:
     source: hosted
     version: "14.2.5"
 sdks:
-  dart: ">=3.5.4 <4.0.0"
+  dart: ">=3.5.3 <4.0.0"
   flutter: ">=3.18.0-18.0.pre.54"
