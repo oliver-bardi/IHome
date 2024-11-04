@@ -93,7 +93,7 @@ class _HeatingScreenState extends State<HeatingScreen> with SingleTickerProvider
     final currentTime = DateTime.now();
     final timeSinceLastUpdate = currentTime.difference(lastUpdate).inSeconds;
 
-    if (timeSinceLastUpdate > 1) { // Ha több mint 5 másodperc telt el
+    if (timeSinceLastUpdate > 5) { // Ha több mint 5 másodperc telt el
       setState(() {
         temperatureDisplay = 'N/A';
         humidityDisplay = 'N/A';
