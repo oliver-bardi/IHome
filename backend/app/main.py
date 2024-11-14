@@ -1,18 +1,18 @@
+# backend/app/main.py
+
 from fastapi import FastAPI
-from app.mqtt_client import start_mqtt_client
+from .router import router
+from .mqtt_client import start_mqtt_client
 import threading
 
-app = FastAPI()  # FastAPI alkalmazás létrehozása
+app = FastAPI()
 
-# MQTT kliens külön szálon történő indítása
+# API végpontok hozzáadása
+app.include_router(router)
+
 def run_mqtt_client():
     start_mqtt_client()
 
-# Alkalmazás indulásakor indítjuk az MQTT klienst
-@app.on_event("startup")
-def startup_event():
-    threading.Thread(target=run_mqtt_client, daemon=True).start()
-
-@app.get("/")
-async def read_root():
-    return {"message": "Hello, FastAPI with MQTT!"}
+# MQTT kliens futtatása háttérszálban
+mqtt_thread = threading.Thread(target=run_mqtt_client)
+mqtt_thread.start()
