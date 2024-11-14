@@ -8,57 +8,44 @@ class HeatingScreen extends StatefulWidget {
 
 class _HeatingScreenState extends State<HeatingScreen> {
   final ApiService _apiService = ApiService();
-  String _status = "unknown";
+  double temperature1 = 0.0;
+  double humidity1 = 0.0;
+  double temperature2 = 0.0;
+  double humidity2 = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _fetchStatus();
+    _fetchSensorData();
   }
 
-  Future<void> _fetchStatus() async {
-    try {
-      final status = await _apiService.getDeviceStatus("heating");
+  Future<void> _fetchSensorData() async {
+    final data = await _apiService.getSensorData();
+    if (data != null) {
       setState(() {
-        _status = status;
+        temperature1 = data['temperature1'] ?? 0.0;
+        humidity1 = data['humidity1'] ?? 0.0;
+        temperature2 = data['temperature2'] ?? 0.0;
+        humidity2 = data['humidity2'] ?? 0.0;
       });
-    } catch (e) {
-      print("Error fetching status: $e");
-    }
-  }
-
-  Future<void> _controlDevice(String state) async {
-    try {
-      await _apiService.controlDevice("heating", state);
-      _fetchStatus();
-    } catch (e) {
-      print("Error controlling device: $e");
+    } else {
+      // Kezelheted, ha az adatok nullak, például egy hibaüzenetet jeleníthetsz meg
+      print("Failed to load sensor data");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Heating Control'),
-      ),
+      appBar: AppBar(title: Text("Heating Control")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Heating Status: $_status',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _controlDevice("on"),
-              child: Text("Turn On"),
-            ),
-            ElevatedButton(
-              onPressed: () => _controlDevice("off"),
-              child: Text("Turn Off"),
-            ),
+          children: [
+            Text("Temperature 1: $temperature1 °C"),
+            Text("Humidity 1: $humidity1 %"),
+            Text("Temperature 2: $temperature2 °C"),
+            Text("Humidity 2: $humidity2 %"),
           ],
         ),
       ),

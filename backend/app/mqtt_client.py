@@ -1,20 +1,51 @@
 import paho.mqtt.client as mqtt
-from app.db import update_status_in_db
+import json
 import os
-import paho.mqtt.client as mqtt
 
-mqtt_client = mqtt.Client()
-mqtt_client.connect(
-    host=os.getenv("MQTT_HOST", "localhost"),
-    port=int(os.getenv("MQTT_PORT", 1883))
-)
+# MQTT Broker beállításai
+MQTT_BROKER = "mqtt"
+MQTT_PORT = 1883
+MQTT_TOPIC = "home/status"
 
+# Kapcsolódáskor meghívott függvény
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to MQTT Broker!")
+        client.subscribe(MQTT_TOPIC)
+    else:
+        print(f"Failed to connect, return code {rc}")
 
-# Üzenetkezelő függvény az összes modulhoz
+# Üzenet érkezésekor meghívott függvény
 def on_message(client, userdata, msg):
-    module = msg.topic.split('/')[1]  # Például 'lighting', 'heating'
-    status = msg.payload.decode()
-    update_status_in_db(module, status)
+    print("Message received on topic:", msg.topic)
+    try:
+        # JSON payload dekódolása
+        payload = json.loads(msg.payload.decode())
+        print("Payload received:")
 
-mqtt_client.on_message = on_message
-mqtt_client.subscribe("home/+/status")
+        # Kiírás a hőmérséklet- és páratartalom-értékekre
+        print(f"  Temperature Sensor 1: {payload.get('temperature1', 'N/A')} °C")
+        print(f"  Humidity Sensor 1: {payload.get('humidity1', 'N/A')} %")
+        print(f"  Temperature Sensor 2: {payload.get('temperature2', 'N/A')} °C")
+        print(f"  Humidity Sensor 2: {payload.get('humidity2', 'N/A')} %")
+
+        # Kapcsolók állapotainak kiírása
+        switch_states = payload.get("switchStates", {})
+        if switch_states:
+            print("  Switch States:")
+            for switch, state in switch_states.items():
+                print(f"    {switch}: {state}")
+        else:
+            print("  No switches are ON.")
+
+    except json.JSONDecodeError:
+        print("Failed to decode JSON payload")
+
+# MQTT kliens indítása
+def start_mqtt_client():
+    client = mqtt.Client("BackendClient")
+    client.on_connect = on_connect
+    client.on_message = on_message
+
+    client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    client.loop_forever()

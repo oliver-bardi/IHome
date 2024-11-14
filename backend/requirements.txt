@@ -1,4 +1,5 @@
 fastapi
 uvicorn
-paho-mqtt
-mysql-connector-python
+sqlalchemy
+pymysql
+paho-mqtt==1.5.1

@@ -8,56 +8,43 @@ class SecurityScreen extends StatefulWidget {
 
 class _SecurityScreenState extends State<SecurityScreen> {
   final ApiService _apiService = ApiService();
-  String _status = "unknown";
+  String securityStatus = "OFF";
 
   @override
   void initState() {
     super.initState();
-    _fetchStatus();
+    _fetchSecurityStatus();
   }
 
-  Future<void> _fetchStatus() async {
-    try {
-      final status = await _apiService.getDeviceStatus("security");
+  Future<void> _fetchSecurityStatus() async {
+    final status = await _apiService.getDeviceStatus("security");
+    setState(() {
+      securityStatus = status ?? "OFF";
+    });
+  }
+
+  Future<void> _toggleSecurity() async {
+    final newState = securityStatus == "ON" ? "OFF" : "ON";
+    final success = await _apiService.controlDevice("security", newState);
+    if (success) {
       setState(() {
-        _status = status;
+        securityStatus = newState;
       });
-    } catch (e) {
-      print("Error fetching status: $e");
-    }
-  }
-
-  Future<void> _controlDevice(String state) async {
-    try {
-      await _apiService.controlDevice("security", state);
-      _fetchStatus();
-    } catch (e) {
-      print("Error controlling device: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Security Control'),
-      ),
+      appBar: AppBar(title: Text("Security Control")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Security Status: $_status',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _controlDevice("arm"),
-              child: Text("Arm"),
-            ),
-            ElevatedButton(
-              onPressed: () => _controlDevice("disarm"),
-              child: Text("Disarm"),
+          children: [
+            Text("Security is $securityStatus"),
+            Switch(
+              value: securityStatus == "ON",
+              onChanged: (value) => _toggleSecurity(),
             ),
           ],
         ),
