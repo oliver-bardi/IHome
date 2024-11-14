@@ -1,0 +1,46 @@
+version: '3.8'
+
+networks:
+  mqtt_network:
+    external: true
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: home_automation
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"  # Az SQL script hozzáadása
+    networks:
+      - mqtt_network
+
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - "./mosquitto_config/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+    networks:
+      - mqtt_network
+
+  backend:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - mqtt
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: root
+      DATABASE_PASSWORD: rootpassword
+      DATABASE_NAME: home_automation
+      MQTT_HOST: mqtt
+      MQTT_PORT: 1883
+    networks:
+      - mqtt_network
