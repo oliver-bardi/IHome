@@ -2,23 +2,30 @@
 #include <PubSubClient.h>
 #include <DHT.h>
 
-#define DHTPIN 2         // Pin where the DHT11 is connected
-#define DHTTYPE DHT11    // DHT 11
+#define DHTTYPE DHT11 // DHT 11 típus
 
-// Define pins for relays (switches)
-const int RELAY_PINS[19] = {4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33, 34};
+// Definiáljuk a DHT szenzorokat (például a pin-eket 2-től 6-ig)
+const int DHT_PINS[5] = {2, 3, 4, 5, 6}; // Az 5 DHT11 szenzor pinjei
+DHT dhtSensors[5] = {
+    DHT(DHT_PINS[0], DHTTYPE),
+    DHT(DHT_PINS[1], DHTTYPE),
+    DHT(DHT_PINS[2], DHTTYPE),
+    DHT(DHT_PINS[3], DHTTYPE),
+    DHT(DHT_PINS[4], DHTTYPE)
+};
 
-DHT dht(DHTPIN, DHTTYPE);
+// Definiáljuk a 15 relé (kapcsoló) pineit
+const int RELAY_PINS[15] = {12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32};
 
-const char* ssid = "FRANKIE 9564";   // Your Wi-Fi SSID
-const char* password = "y008<D19";    // Your Wi-Fi Password
-const char* mqtt_server = "192.168.137.1"; // MQTT Broker IP
+const char* ssid = "FRANKIE 9564";         // Wi-Fi SSID
+const char* password = "y008<D19";          // Wi-Fi jelszó
+const char* mqtt_server = "192.168.137.1";  // MQTT Broker IP
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-// Array to hold the state of each switch (default OFF)
-bool switchStates[19] = {false}; // All switches off initially
+// Kapcsoló állapotok (alapértelmezésben OFF)
+bool switchStates[15] = {false}; // Mind OFF állapotban kezdetben
 
 void setup_wifi() {
     delay(10);
@@ -49,12 +56,12 @@ void callback(char* topic, byte* message, unsigned int length) {
     Serial.print(": ");
     Serial.println(receivedMessage);
 
-    // Handle switch topics by parsing the index from the topic
+    // Kapcsoló állapotainak kezelése
     if (String(topic).startsWith("home/switch/")) {
-        int switchIndex = String(topic).substring(12).toInt(); // Extract switch number from topic
+        int switchIndex = String(topic).substring(12).toInt(); // Kapcsoló sorszámának kiszedése a témából
 
-        // Check if the switchIndex is within bounds
-        if (switchIndex >= 0 && switchIndex < 19) {
+        // Kapcsoló index ellenőrzése
+        if (switchIndex >= 0 && switchIndex < 15) {
             switchStates[switchIndex] = (receivedMessage == "ON");
             digitalWrite(RELAY_PINS[switchIndex], switchStates[switchIndex] ? HIGH : LOW);
             Serial.print("Switch ");
@@ -71,7 +78,7 @@ void reconnect() {
         if (client.connect("ESP32Client")) {
             Serial.println("connected");
 
-            // Subscribe to all switch commands using wildcard
+            // Kapcsoló parancsok feliratkozása wildcard-dal
             client.subscribe("home/switch/+/set");
         } else {
             Serial.print("failed, rc=");
@@ -86,12 +93,16 @@ void setup() {
     setup_wifi();
     client.setServer(mqtt_server, 1883);
     client.setCallback(callback);
-    dht.begin();
 
-    // Initialize relay pins
-    for (int i = 0; i < 19; i++) {
+    // Minden szenzor inicializálása
+    for (int i = 0; i < 5; i++) {
+        dhtSensors[i].begin();
+    }
+
+    // Kapcsoló pin-ek inicializálása
+    for (int i = 0; i < 15; i++) {
         pinMode(RELAY_PINS[i], OUTPUT);
-        digitalWrite(RELAY_PINS[i], LOW); // Start with all relays off
+        digitalWrite(RELAY_PINS[i], LOW); // Minden relé alaphelyzetben OFF
     }
 }
 
@@ -108,32 +119,37 @@ void loop() {
     if (currentMillis - previousMillis >= interval) {
         previousMillis = currentMillis;
 
-        // Read sensor data
-        float humidity = dht.readHumidity();
-        float temperature = dht.readTemperature();
-
-        if (isnan(humidity) || isnan(temperature)) {
-            Serial.println("Error reading from DHT sensor!");
-            return;
-        }
-
-        // Create a JSON payload with sensor data and ON switch states only
+        // JSON üzenet készítése a szenzor adatokkal és kapcsoló állapotokkal
         String payload = "{";
-        payload += "\"temperature\": " + String(temperature) + ",";
-        payload += "\"humidity\": " + String(humidity) + ",";
-        payload += "\"switchStates\":{";
 
-        bool first = true; // Flag to handle commas
-        for (int i = 0; i < 19; i++) {
-            if (switchStates[i]) { // Only send ON switches
-                if (!first) payload += ","; // Add comma between switch states
+        // Mind az 5 szenzor adatainak hozzáadása
+        payload += "\"sensors\":{";
+        for (int i = 0; i < 5; i++) {
+            float humidity = dhtSensors[i].readHumidity();
+            float temperature = dhtSensors[i].readTemperature();
+
+            if (!isnan(humidity) && !isnan(temperature)) {
+                payload += "\"sensor" + String(i) + "\":{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
+                if (i < 4) payload += ","; // Vessző, ha nem az utolsó elem
+            } else {
+                Serial.println("Error reading from DHT sensor " + String(i) + "!");
+            }
+        }
+        payload += "},";
+
+        // Kapcsolók állapotainak hozzáadása
+        payload += "\"switchStates\":{";
+        bool first = true; // Vessző kezelése
+        for (int i = 0; i < 15; i++) {
+            if (switchStates[i]) { // Csak az ON állapotú kapcsolókat küldjük
+                if (!first) payload += ","; // Vessző a kapcsolók között
                 payload += "\"switch" + String(i) + "\":\"ON\"";
                 first = false;
             }
         }
-        payload += "}}"; // Close JSON objects
+        payload += "}}"; // Záró JSON objektumok
 
-        // Publish the JSON payload
+        // JSON üzenet publikálása
         if (client.publish("home/status", payload.c_str())) {
             Serial.println("Published payload successfully");
         } else {
