@@ -1,5 +1,10 @@
 fastapi
 uvicorn
 sqlalchemy
-pymysql
 paho-mqtt==1.5.1
+flask
+Werkzeug==2.2.3
+flask-sqlalchemy
+Flask-Cors==3.0.10
+pymysql
+flask-migrate

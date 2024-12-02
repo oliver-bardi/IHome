@@ -4,16 +4,21 @@ networks:
   mqtt_network:
     external: true
 
+volumes:
+  db_data:
+
 services:
   db:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
       MYSQL_DATABASE: home_automation
     ports:
       - "3306:3306"
     volumes:
-      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"  # Az SQL script hozzáadása
+      - db_data:/var/lib/mysql
     networks:
       - mqtt_network
 
@@ -36,10 +41,7 @@ services:
       - db
       - mqtt
     environment:
-      DATABASE_HOST: db
-      DATABASE_USER: root
-      DATABASE_PASSWORD: rootpassword
-      DATABASE_NAME: home_automation
+      SQLALCHEMY_DATABASE_URI: mysql+pymysql://root:rootpassword@db/home_automation
       MQTT_HOST: mqtt
       MQTT_PORT: 1883
     networks:
