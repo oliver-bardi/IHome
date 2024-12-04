@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class FireScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'Ez a Kezdőlap tartalma.',
+        'Ez a Tűz oldal tartalma.',
         style: TextStyle(fontSize: 24),
       ),
     );
