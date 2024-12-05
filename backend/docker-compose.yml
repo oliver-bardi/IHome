@@ -5,33 +5,39 @@ services:
     image: eclipse-mosquitto
     container_name: mqtt-broker
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "1883:1883"  # MQTT alapértelmezett port
+      - "9001:9001"  # WebSocket port (ha szükséges)
     volumes:
       - "./mosquitto_config/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+    networks:
+      - mqtt_network
+
   mysql:
     image: mysql:8.0
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: smart_home
+      MYSQL_DATABASE: home_automation
     ports:
-      - "3306:3306"
+      - "3306:3306"  # MySQL alapértelmezett port
     volumes:
-      - db_data:/var/lib/mysql
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    networks:
+      - mqtt_network
 
-  backend:
+  python-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: backend-container
+    container_name: python-backend
     ports:
-      - "8000:8000"
+      - "5000:5000"  # Flask port
     depends_on:
-      - mysql
       - mqtt
+      - mysql
+    networks:
+      - mqtt_network
 
-volumes:
-  db_data:
+networks:
+  mqtt_network:
+    driver: bridge

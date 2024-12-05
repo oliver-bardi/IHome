@@ -1,9 +1,24 @@
-FROM python:3.10-slim
+# Válaszd a kívánt alap képet (pl. Python, Node.js, stb.)
+FROM python:3.9-slim
+# Install Flask and Werkzeug with compatible versions
+FROM python:3.9-slim
 
-WORKDIR /app
+# Telepítjük a szükséges csomagokat
+RUN pip install Flask==2.1.2 werkzeug==2.0.3
 
+# További Docker beállítások
+
+
+# A szükséges fájlok másolása a konténerbe
+COPY requirements.txt .
+
+# Követelmények telepítése
+RUN pip install -r requirements.txt
+
+# Az alkalmazás másolása
 COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Alkalmazás futtatása
+CMD ["python", "app.py"]
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+

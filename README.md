@@ -1,16 +1,18 @@
-# testapp
+# Home Automation Backend
 
-A new Flutter project.
+## Leírás
 
-## Getting Started
+Ez a projekt egy egyszerű Python backend, amely folyamatosan logolja a szenzorok és kapcsolók adatait egy MySQL adatbázisba. Docker segítségével futtatható.
 
-This project is a starting point for a Flutter application.
+## Követelmények
 
-A few resources to get you started if this is your first Flutter project:
+- Python 3.12
+- Docker és Docker Compose
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Használat
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Klónozd a projektet.
+2. Futtasd a következő parancsot a projekt mappájában:
+
+```bash
+docker-compose up --build

@@ -1,5 +1,4 @@
-fastapi
-uvicorn
-sqlalchemy
-pymysql
+Flask==2.2.2  # A legújabb verzió
+Werkzeug==2.2.2  # Kompatibilis verzió
 paho-mqtt==1.6.1
+mysql-connector-python==8.0.27
