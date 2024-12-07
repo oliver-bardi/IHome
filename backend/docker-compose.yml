@@ -12,6 +12,7 @@ services:
     networks:
       - mqtt_network
 
+
   mysql:
     image: mysql:8.0
     container_name: mysql-container
@@ -32,6 +33,22 @@ services:
     container_name: python-backend
     ports:
       - "5000:5000"  # Flask port
+    depends_on:
+      - mqtt
+      - mysql
+    networks:
+      - mqtt_network
+
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red
+    ports:
+      - "1880:1880"  # Node-RED alapértelmezett port
+    volumes:
+      - "./node-red-data:/data"  # Tartós tárolás a Node-RED számára
+    environment:
+      - NODE_RED_ENABLE_PROJECTS=true  # Node-RED projektek engedélyezése
+      - TZ=Europe/Budapest  # Időzóna beállítása
     depends_on:
       - mqtt
       - mysql

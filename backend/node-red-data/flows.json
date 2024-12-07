@@ -1,0 +1,2925 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "dee70482db7a40e4",
+        "type": "tab",
+        "label": "mux",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c6eb95abe3a5ec6e",
+        "type": "tab",
+        "label": "Nappali",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4db3dea499222145",
+        "type": "tab",
+        "label": "Haloszoba",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "17841aee5c1b8344",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "9a85b0cf04036643",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#33c8e6",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#33c8e6",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#77daee",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#33c8e6",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "37c79c41a85f5452",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.137.1",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "15",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "8f9ffda84a7ea369",
+        "type": "ui_group",
+        "name": "Wellcome to iHome!",
+        "tab": "17841aee5c1b8344",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "513bfcefa1964452",
+        "type": "ui_group",
+        "name": "Nappalis",
+        "tab": "17841aee5c1b8344",
+        "order": 3,
+        "disp": false,
+        "width": 4,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8d987c6cae27c3d9",
+        "type": "ui_group",
+        "name": "Hálószobas",
+        "tab": "17841aee5c1b8344",
+        "order": 4,
+        "disp": false,
+        "width": "4",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0c2bdc3fad28c5f4",
+        "type": "ui_tab",
+        "name": "Nappali",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "f37c7dd6e76f7343",
+        "type": "ui_tab",
+        "name": "Haloszoba",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6e59e185e0bac9cb",
+        "type": "ui_group",
+        "name": "just_haloszoba",
+        "tab": "f37c7dd6e76f7343",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7bb025a6da62f343",
+        "type": "ui_group",
+        "name": "justnappali",
+        "tab": "0c2bdc3fad28c5f4",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "11130b2099b2c68d",
+        "type": "ui_tab",
+        "name": "Weather outside",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d3a4b0e214e15b1f",
+        "type": "ui_group",
+        "name": "Dynmic Input",
+        "tab": "11130b2099b2c68d",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "9bcdb44d701984bc",
+        "type": "ui_group",
+        "name": "Meteo",
+        "tab": "17841aee5c1b8344",
+        "order": 2,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fd8fafa1274f2ee8",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 1,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "29d0a3e3b9870521",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 3,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "fa1b60b027ddce83",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 4,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "892d4cf921304689",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 5,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "815cd36326f1e12b",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 6,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "d9592ba5b8385222",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 7,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "bfd90b9e2ea5d80d",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 8,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "f921992053c425ec",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 11,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "ca85a543dfa8a16f",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 12,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "d7a1fee84cd4bb56",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 13,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "4038e7ce6705f230",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 18,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "5fede8a8522d4041",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 20,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "c17fd5b3d4ddfc02",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 24,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "09a0d24c716853b5",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8f9ffda84a7ea369",
+        "order": 25,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "6ec9365675423521",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 2,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "15793ebe95f5d5f4",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "93ca706471400ae4",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 5,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "3cc5058945d66725",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 12,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "4dbc837224e038cd",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 13,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "87c5e4c83a4df4da",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 14,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "91beb55bf6ce8ca6",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 15,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "4fced28777a68639",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 16,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "c115b6080d34bd9c",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 17,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "430d54da196fc1d4",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 18,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "d3bdfe99b47ecefc",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 19,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "e49ce06df9a56626",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 20,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "62799dc69691abca",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 21,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "e8fdf7f3057a6b1e",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 23,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "939fd8413901890c",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 24,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "c6301416f43cbf85",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "9bcdb44d701984bc",
+        "order": 25,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "512b59b1b378b154",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "513bfcefa1964452",
+        "order": 5,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "2003f600afcc485d",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "8d987c6cae27c3d9",
+        "order": 5,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "7c1548cbf4e00eae",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "function 3",
+        "func": "\n// Kiszedi a hőmérsékletet és a páratartalmat az üzenetből\nlet temperature2 = msg.payload.temperature2 || null; // Alapértelmezett null, ha nincs adat\nlet humidity2 = msg.payload.humidity1 || null; // Alapértelmezett null, ha nincs adat\n\n// Létrehozza a kimeneti üzeneteket\nlet temperatureMsg = { payload: temperature2 };\nlet humidityMsg = { payload: humidity2 };\n\n// Az első kimenetre küldi a hőmérsékletet, a másodikra a páratartalmat\nreturn [temperatureMsg, humidityMsg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 440,
+        "wires": [
+            [
+                "5d8fd9abdc242ee9"
+            ],
+            [
+                "18fcddfd9364a403"
+            ]
+        ]
+    },
+    {
+        "id": "5d8fd9abdc242ee9",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "8d987c6cae27c3d9",
+        "order": 2,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "18fcddfd9364a403",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "8d987c6cae27c3d9",
+        "order": 3,
+        "width": 4,
+        "height": 3,
+        "gtype": "wave",
+        "title": "",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "0d4388e80a8dd7fb",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "function 2",
+        "func": "\n// Kiszedi a hőmérsékletet és a páratartalmat az üzenetből\nlet temperature1 = msg.payload.temperature1 || null; // Alapértelmezett null, ha nincs adat\nlet humidity1 = msg.payload.humidity1 || null; // Alapértelmezett null, ha nincs adat\n\n// Létrehozza a kimeneti üzeneteket\nlet temperatureMsg = { payload: temperature1 };\nlet humidityMsg = { payload: humidity1 };\n\n// Az első kimenetre küldi a hőmérsékletet, a másodikra a páratartalmat\nreturn [temperatureMsg, humidityMsg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 300,
+        "wires": [
+            [
+                "c9fe411d2fb36b15"
+            ],
+            [
+                "8cb9d178270707dc"
+            ]
+        ]
+    },
+    {
+        "id": "5d94eeab146663e3",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "home/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "37c79c41a85f5452",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 440,
+        "wires": [
+            [
+                "7c1548cbf4e00eae"
+            ]
+        ]
+    },
+    {
+        "id": "86d95e72f212c22c",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "home/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "37c79c41a85f5452",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 300,
+        "wires": [
+            [
+                "0d4388e80a8dd7fb"
+            ]
+        ]
+    },
+    {
+        "id": "8cb9d178270707dc",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "513bfcefa1964452",
+        "order": 3,
+        "width": 4,
+        "height": 3,
+        "gtype": "wave",
+        "title": "",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 550,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "c9fe411d2fb36b15",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "513bfcefa1964452",
+        "order": 2,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 570,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "89069076b776c85a",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "jump",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Nappali\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "fcb068b7a587bbd4"
+            ]
+        ]
+    },
+    {
+        "id": "fcb068b7a587bbd4",
+        "type": "ui_ui_control",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "events": "all",
+        "x": 520,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fecf8535afe508a2",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "jump",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Haloszoba\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 180,
+        "wires": [
+            [
+                "54e98cf5ad51fdbe"
+            ]
+        ]
+    },
+    {
+        "id": "54e98cf5ad51fdbe",
+        "type": "ui_ui_control",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "events": "all",
+        "x": 520,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "884d5abca302ab89",
+        "type": "ui_button",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "8d987c6cae27c3d9",
+        "order": 1,
+        "width": 4,
+        "height": 1,
+        "passthru": false,
+        "label": "Bedroom",
+        "tooltip": "",
+        "color": "#000000",
+        "bgcolor": "#81c0e8",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 180,
+        "wires": [
+            [
+                "fecf8535afe508a2"
+            ]
+        ]
+    },
+    {
+        "id": "01fa5ace05389a40",
+        "type": "ui_button",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "513bfcefa1964452",
+        "order": 1,
+        "width": 4,
+        "height": 1,
+        "passthru": false,
+        "label": "Living Room",
+        "tooltip": "",
+        "color": "#000000",
+        "bgcolor": "#81c0e8",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 210,
+        "y": 120,
+        "wires": [
+            [
+                "89069076b776c85a"
+            ]
+        ]
+    },
+    {
+        "id": "d81aa8bc.35b81",
+        "type": "ui_template",
+        "z": "f6f2187d.f17ca8",
+        "group": "",
+        "name": "Node-Red Dashboard Custom CSS",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\nroot, a, button, p, div {\n    -webkit-user-select: none !important;\n}\n\nbody {\n    background: -webkit-linear-gradient(\n    55deg,\n    #009785 0%,\n    #245aa5 50%,\n    #b800e9 100%\n    );\n    -webkit-touch-callout: none !important;\n}\n\nbody.nr-dashboard-theme md-toolbar,\nbody.nr-dashboard-theme md-content md-card {\n    background-color: transparent !important;\n    color: #FFFFFF;\n}\n\nui-card-panel {\n    background-color: rgba(255,255,255,0.1) !important;\n    border-radius: 10px !important;\n}\n    \n#Homey_Dashboard_Navigation {\n    background-color: transparent !important;\n    border-radius: 10px !important;\n}\n\n.md-card.md-default-theme, md-card {\n    border-radius: 10px;\n}\n\n.nr-dashboard-switch.ng-scope {\n    background-color: rgba(255,255,255,.2) !important;\n}\n\n.nr-dashboard-switch.ng-scope:hover {\n    background-color: rgba(255,255,255,.5) !important;\n}\n\n.nr-dashboard-theme .nr-dashboard-button .md-button {\n    background-color: rgba(255,255,255,.2);\n}\n\n.md-button {\n    border-radius: 10px;\n}\n\n.nr-dashboard-cardpanel layout-column {\n    background-color: rgba(255,255,255,0.2) !important;\n    background-color: transparent !important;\n    border-radius: 10px !important;\n}\n\n.nr-dashboard-theme ui-card-panel {\n    border: none;\n}\n\n.nr-dashboard-template {\n    overflow-y: visible;\n}\n.nr-dashboard-theme md-content md-card {\n    background-color: transparent !important;\n}\n\n.nr-dashboard-theme ui-card-panel p.nr-dashboard-cardtitle {\n    color: rgba(255, 255, 255, 0.5);\n}\n</style>\n\n<script>\ndocument.ontouchmove = function (e) {\n    e.preventDefault();\n}\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "global",
+        "x": 220,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "744988076cb06a80",
+        "type": "ui_clock",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 2,
+        "width": 6,
+        "height": 3,
+        "x": 330,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "08df310211551970",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 560,
+        "wires": [
+            [
+                "744988076cb06a80"
+            ]
+        ]
+    },
+    {
+        "id": "13635fc76aa4197c",
+        "type": "openweathermap",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "wtype": "current",
+        "lon": "",
+        "lat": "",
+        "city": "Targu-Mures",
+        "country": "RO",
+        "language": "en",
+        "x": 430,
+        "y": 680,
+        "wires": [
+            [
+                "59e4d4340afe6580",
+                "ecfbc271c77c485b",
+                "5e1ee5a6f6ea1ecf",
+                "c576ed8dd0e18360",
+                "534c7a8751aa78b7",
+                "7f9dded9037b23cb",
+                "e4cbfe17798a478e",
+                "7f00d9dff2a7ba9a"
+            ]
+        ]
+    },
+    {
+        "id": "42735edb78fa3606",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "3",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 680,
+        "wires": [
+            [
+                "13635fc76aa4197c"
+            ]
+        ]
+    },
+    {
+        "id": "59e4d4340afe6580",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "ecfbc271c77c485b",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.tempc",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 760,
+        "wires": [
+            [
+                "155611a8f90b7d5c"
+            ]
+        ]
+    },
+    {
+        "id": "e92d4749e57f17c1",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "9bcdb44d701984bc",
+        "order": 6,
+        "width": 3,
+        "height": 3,
+        "gtype": "wave",
+        "title": "Páratartalom",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 850,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "5e1ee5a6f6ea1ecf",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 800,
+        "wires": [
+            [
+                "e92d4749e57f17c1"
+            ]
+        ]
+    },
+    {
+        "id": "39715fd60dbf4fac",
+        "type": "ui_form",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "label": "",
+        "group": "d3a4b0e214e15b1f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "City",
+                "value": "city",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Country",
+                "value": "country",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "city": "",
+            "country": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 250,
+        "y": 1500,
+        "wires": [
+            [
+                "7e8c2c634ec0a947"
+            ]
+        ]
+    },
+    {
+        "id": "7e8c2c634ec0a947",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 1500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c357f3b6f7f55573",
+        "type": "openweathermap",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "wtype": "current",
+        "lon": "",
+        "lat": "",
+        "city": "",
+        "country": "",
+        "language": "en",
+        "x": 710,
+        "y": 1680,
+        "wires": [
+            [
+                "2012cfe90ff2c52c",
+                "81916868b3475330"
+            ]
+        ]
+    },
+    {
+        "id": "f4bafb787a960305",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "3",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 1680,
+        "wires": [
+            [
+                "dee37c9bb2b652a5"
+            ]
+        ]
+    },
+    {
+        "id": "dee37c9bb2b652a5",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "function 1",
+        "func": "var inp = global.get(\"input\")\n\nmsg = {\n    location:{\n        city: inp.city,\n        country: inp.country\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1680,
+        "wires": [
+            [
+                "c357f3b6f7f55573"
+            ]
+        ]
+    },
+    {
+        "id": "2012cfe90ff2c52c",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.location",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 1680,
+        "wires": [
+            [
+                "2f9e77a8cd0e98dd"
+            ]
+        ]
+    },
+    {
+        "id": "81916868b3475330",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.tempc",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 1760,
+        "wires": [
+            [
+                "b1325f7dc03dd7c5"
+            ]
+        ]
+    },
+    {
+        "id": "b1325f7dc03dd7c5",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "d3a4b0e214e15b1f",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Temperature",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 1150,
+        "y": 1760,
+        "wires": []
+    },
+    {
+        "id": "2f9e77a8cd0e98dd",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "d3a4b0e214e15b1f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Location",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1680,
+        "wires": []
+    },
+    {
+        "id": "c576ed8dd0e18360",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.temp_maxc",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 880,
+        "wires": [
+            [
+                "894de94380bbcc53"
+            ]
+        ]
+    },
+    {
+        "id": "534c7a8751aa78b7",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.temp_minc",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 840,
+        "wires": [
+            [
+                "5a0fc6340b7bb1a3"
+            ]
+        ]
+    },
+    {
+        "id": "7f9dded9037b23cb",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.pressure",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 920,
+        "wires": [
+            [
+                "a2272a598d888475"
+            ]
+        ]
+    },
+    {
+        "id": "e4cbfe17798a478e",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.windspeed",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 960,
+        "wires": [
+            [
+                "47d7f2d5d4877da3"
+            ]
+        ]
+    },
+    {
+        "id": "894de94380bbcc53",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "9bcdb44d701984bc",
+        "order": 9,
+        "width": 3,
+        "height": 1,
+        "name": "",
+        "label": "Max Hőmérséklet",
+        "format": "{{msg.payload}}°C",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 870,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "5a0fc6340b7bb1a3",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "9bcdb44d701984bc",
+        "order": 8,
+        "width": 3,
+        "height": 1,
+        "name": "",
+        "label": "Min Hőmérséklet",
+        "format": "{{msg.payload}}°C",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 870,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "155611a8f90b7d5c",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "9bcdb44d701984bc",
+        "order": 7,
+        "width": 3,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Hőmérséklet",
+        "label": "",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "30",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 850,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "47d7f2d5d4877da3",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "9bcdb44d701984bc",
+        "order": 10,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Szélsebesség",
+        "format": "{{msg.payload}}km/h",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 860,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "a2272a598d888475",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "9bcdb44d701984bc",
+        "order": 11,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Légnyomás",
+        "format": "{{msg.payload}}hPa",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 850,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "aa6d20bf13792141",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "jump",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Weather outside\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 220,
+        "wires": [
+            [
+                "237f47ee2dd8872e"
+            ]
+        ]
+    },
+    {
+        "id": "237f47ee2dd8872e",
+        "type": "ui_ui_control",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "events": "all",
+        "x": 520,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6111eaa65e08d248",
+        "type": "ui_button",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "9bcdb44d701984bc",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Weather outside",
+        "tooltip": "",
+        "color": "#000000",
+        "bgcolor": "#81c0e8",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "aa6d20bf13792141"
+            ]
+        ]
+    },
+    {
+        "id": "7f00d9dff2a7ba9a",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.description",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 1000,
+        "wires": [
+            [
+                "92a241d1bcf6b13e"
+            ]
+        ]
+    },
+    {
+        "id": "92a241d1bcf6b13e",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "9bcdb44d701984bc",
+        "order": 4,
+        "width": 5,
+        "height": 1,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 850,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "f79e0178f5d4204a",
+        "type": "mqtt in",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "37c79c41a85f5452",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 360,
+        "wires": [
+            [
+                "e642314a9054756b"
+            ]
+        ]
+    },
+    {
+        "id": "e642314a9054756b",
+        "type": "function",
+        "z": "dee70482db7a40e4",
+        "name": "function 4",
+        "func": "// Az összes kapcsoló állapotának objektuma\nlet switchStates = msg.payload.switchStates || {}; // Ha undefined, használjunk üres objektumot\n\n// Kimenetek tömbjének létrehozása\nlet outputs = [];\n\n// Külön üzenet létrehozása minden kapcsolóhoz\nfor (let i = 0; i < 19; i++) {\n    let switchState = switchStates[\"switch\" + i] || \"OFF\"; // Alapértelmezett OFF, ha nincs adat\n    outputs.push({ payload: switchState });\n}\n\n// Az összes kimenet visszaadása\nreturn outputs;",
+        "outputs": 16,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 360,
+        "wires": [
+            [
+                "2340e5bd493a0f12"
+            ],
+            [
+                "55e480d5397e38b2"
+            ],
+            [
+                "8491b5971a2c5a9f"
+            ],
+            [
+                "c53b33ff712f230d"
+            ],
+            [
+                "c7bf0a32da8f532c"
+            ],
+            [
+                "a9a449a83d766631"
+            ],
+            [
+                "14e8599d6cc48440"
+            ],
+            [
+                "ed4fc378.1c239"
+            ],
+            [
+                "4b6d9a26fc54c4fc"
+            ],
+            [
+                "11615024366ad12e"
+            ],
+            [
+                "4debec4deb567236"
+            ],
+            [
+                "a9b8269b02f6b26d"
+            ],
+            [
+                "76247b39cc38bddd"
+            ],
+            [
+                "61a3251ce3b0b37b"
+            ],
+            [
+                "5883f0d156a15408"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "16e89da10fe3b8b7",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/0/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "c2c630197d60d7aa",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/1/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "32e0f01afe867c0b",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/2/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "ce3c01b3c782bec2",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/3/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "8a58d08d11013df2",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/4/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "a9a449a83d766631",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch5",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 19,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 280,
+        "wires": [
+            [
+                "f647717d8d9b7d9b"
+            ]
+        ]
+    },
+    {
+        "id": "f647717d8d9b7d9b",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/5/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "8fd6e3ed68b24bc4",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/6/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "5f588f636017b38d",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/7/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "4b6d9a26fc54c4fc",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch8",
+        "tooltip": "",
+        "group": "9bcdb44d701984bc",
+        "order": 22,
+        "width": 5,
+        "height": 3,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 400,
+        "wires": [
+            [
+                "5240f78c3ea2f149"
+            ]
+        ]
+    },
+    {
+        "id": "5240f78c3ea2f149",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/8/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "11615024366ad12e",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch9",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 9,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 440,
+        "wires": [
+            [
+                "92affc270d5f87dc"
+            ]
+        ]
+    },
+    {
+        "id": "92affc270d5f87dc",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/9/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4debec4deb567236",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch10",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 14,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 480,
+        "wires": [
+            [
+                "d0123d78a67c9105"
+            ]
+        ]
+    },
+    {
+        "id": "d0123d78a67c9105",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/10/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a9b8269b02f6b26d",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch11",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 15,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 520,
+        "wires": [
+            [
+                "0e0322ce40bbff04"
+            ]
+        ]
+    },
+    {
+        "id": "0e0322ce40bbff04",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/11/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "76247b39cc38bddd",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch12",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 16,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 560,
+        "wires": [
+            [
+                "6a67d6294a6f9227"
+            ]
+        ]
+    },
+    {
+        "id": "6a67d6294a6f9227",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/12/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "61a3251ce3b0b37b",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch13",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 17,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 600,
+        "wires": [
+            [
+                "3c422de558f3ab40"
+            ]
+        ]
+    },
+    {
+        "id": "3c422de558f3ab40",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/13/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "5883f0d156a15408",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch14",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 21,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 640,
+        "wires": [
+            [
+                "4c16978bf1590f21"
+            ]
+        ]
+    },
+    {
+        "id": "4c16978bf1590f21",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/14/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "3f68aa158cc2c5df",
+        "type": "mqtt out",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "topic": "home/switch/15/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "37c79c41a85f5452",
+        "x": 650,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "ed4fc378.1c239",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "Világítás",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 22,
+        "width": 2,
+        "height": 2,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "fa-4x fa-lightbulb-o",
+        "oncolor": "yellow",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "fa-4x fa-lightbulbfa-4x fa-lightbulb-o",
+        "offcolor": "grey",
+        "animate": true,
+        "className": "",
+        "x": 460,
+        "y": 360,
+        "wires": [
+            [
+                "5f588f636017b38d"
+            ]
+        ]
+    },
+    {
+        "id": "c7bf0a32da8f532c",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "switch8",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 10,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 240,
+        "wires": [
+            [
+                "8a58d08d11013df2"
+            ]
+        ]
+    },
+    {
+        "id": "14e8599d6cc48440",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "8f9ffda84a7ea369",
+        "order": 23,
+        "width": 2,
+        "height": 2,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "fa-4x fa-lightbulb-o",
+        "oncolor": "yellow",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "fa-4x fa-lightbulbfa-4x fa-lightbulb-o",
+        "offcolor": "grey",
+        "animate": true,
+        "className": "",
+        "x": 450,
+        "y": 320,
+        "wires": [
+            [
+                "8fd6e3ed68b24bc4"
+            ]
+        ]
+    },
+    {
+        "id": "2340e5bd493a0f12",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": " Lighting",
+        "tooltip": "",
+        "group": "513bfcefa1964452",
+        "order": 4,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "fa-4x fa-lightbulb-o",
+        "oncolor": "yellow",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "fa-4x fa-lightbulbfa-4x fa-lightbulb-o",
+        "offcolor": "grey",
+        "animate": true,
+        "className": "",
+        "x": 460,
+        "y": 80,
+        "wires": [
+            [
+                "16e89da10fe3b8b7"
+            ]
+        ]
+    },
+    {
+        "id": "55e480d5397e38b2",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "Windows",
+        "tooltip": "",
+        "group": "513bfcefa1964452",
+        "order": 6,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 120,
+        "wires": [
+            [
+                "c2c630197d60d7aa"
+            ]
+        ]
+    },
+    {
+        "id": "8491b5971a2c5a9f",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": " Lighting",
+        "tooltip": "",
+        "group": "8d987c6cae27c3d9",
+        "order": 4,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "fa-4x fa-lightbulb-o",
+        "oncolor": "yellow",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "fa-4x fa-lightbulbfa-4x fa-lightbulb-o",
+        "offcolor": "grey",
+        "animate": true,
+        "className": "",
+        "x": 460,
+        "y": 160,
+        "wires": [
+            [
+                "32e0f01afe867c0b"
+            ]
+        ]
+    },
+    {
+        "id": "c53b33ff712f230d",
+        "type": "ui_switch",
+        "z": "dee70482db7a40e4",
+        "name": "",
+        "label": "Windows",
+        "tooltip": "",
+        "group": "8d987c6cae27c3d9",
+        "order": 6,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 460,
+        "y": 200,
+        "wires": [
+            [
+                "ce3c01b3c782bec2"
+            ]
+        ]
+    },
+    {
+        "id": "89d61442c9a28b87",
+        "type": "function",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "function 5",
+        "func": "\n// Kiszedi a hőmérsékletet és a páratartalmat az üzenetből\nlet temperature1 = msg.payload.temperature1 || null; // Alapértelmezett null, ha nincs adat\nlet humidity1 = msg.payload.humidity1 || null; // Alapértelmezett null, ha nincs adat\n\n// Létrehozza a kimeneti üzeneteket\nlet temperatureMsg = { payload: temperature1 };\nlet humidityMsg = { payload: humidity1 };\n\n// Az első kimenetre küldi a hőmérsékletet, a másodikra a páratartalmat\nreturn [temperatureMsg, humidityMsg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 180,
+        "wires": [
+            [
+                "04d4126194e5fada"
+            ],
+            [
+                "ea1d292cef249c93"
+            ]
+        ]
+    },
+    {
+        "id": "7f7cd34575f4f2c5",
+        "type": "mqtt in",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "",
+        "topic": "home/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "37c79c41a85f5452",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 200,
+        "wires": [
+            [
+                "89d61442c9a28b87"
+            ]
+        ]
+    },
+    {
+        "id": "04d4126194e5fada",
+        "type": "ui_gauge",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "",
+        "group": "7bb025a6da62f343",
+        "order": 1,
+        "width": 4,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Hőmérséklett",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "b970d0b146192269",
+        "type": "ui_button",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "",
+        "group": "7bb025a6da62f343",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "exit",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "1f5078868d49af18"
+            ]
+        ]
+    },
+    {
+        "id": "1f5078868d49af18",
+        "type": "change",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "jump",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Home\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 80,
+        "wires": [
+            [
+                "10b7cd5ddce2a9e0"
+            ]
+        ]
+    },
+    {
+        "id": "10b7cd5ddce2a9e0",
+        "type": "ui_ui_control",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "",
+        "events": "all",
+        "x": 500,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ea1d292cef249c93",
+        "type": "ui_gauge",
+        "z": "c6eb95abe3a5ec6e",
+        "name": "",
+        "group": "7bb025a6da62f343",
+        "order": 5,
+        "width": 4,
+        "height": 4,
+        "gtype": "wave",
+        "title": "Páratartalomm",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "5da77488d8b6706f",
+        "type": "function",
+        "z": "4db3dea499222145",
+        "name": "function 6",
+        "func": "\n// Kiszedi a hőmérsékletet és a páratartalmat az üzenetből\nlet temperature2 = msg.payload.temperature2 || null; // Alapértelmezett null, ha nincs adat\nlet humidity2 = msg.payload.humidity1 || null; // Alapértelmezett null, ha nincs adat\n\n// Létrehozza a kimeneti üzeneteket\nlet temperatureMsg = { payload: temperature2 };\nlet humidityMsg = { payload: humidity2 };\n\n// Az első kimenetre küldi a hőmérsékletet, a másodikra a páratartalmat\nreturn [temperatureMsg, humidityMsg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 140,
+        "wires": [
+            [
+                "d168ea4208739514"
+            ],
+            [
+                "76654f9afb774629"
+            ]
+        ]
+    },
+    {
+        "id": "d168ea4208739514",
+        "type": "ui_gauge",
+        "z": "4db3dea499222145",
+        "name": "",
+        "group": "6e59e185e0bac9cb",
+        "order": 1,
+        "width": 4,
+        "height": 3,
+        "gtype": "compass",
+        "title": "Hőmérséklet",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "76654f9afb774629",
+        "type": "ui_gauge",
+        "z": "4db3dea499222145",
+        "name": "",
+        "group": "6e59e185e0bac9cb",
+        "order": 5,
+        "width": 4,
+        "height": 3,
+        "gtype": "wave",
+        "title": "Páratartalom",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "8886b5c04b990f9d",
+        "type": "mqtt in",
+        "z": "4db3dea499222145",
+        "name": "",
+        "topic": "home/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "37c79c41a85f5452",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "5da77488d8b6706f"
+            ]
+        ]
+    },
+    {
+        "id": "8ef18bbb0e4b1a61",
+        "type": "ui_button",
+        "z": "4db3dea499222145",
+        "name": "",
+        "group": "6e59e185e0bac9cb",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "exit",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 150,
+        "y": 40,
+        "wires": [
+            [
+                "f32df0264c84b29b"
+            ]
+        ]
+    },
+    {
+        "id": "f32df0264c84b29b",
+        "type": "change",
+        "z": "4db3dea499222145",
+        "name": "jump",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"tab\":\"Home\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 310,
+        "y": 40,
+        "wires": [
+            [
+                "8123345cb1f3e31b"
+            ]
+        ]
+    },
+    {
+        "id": "8123345cb1f3e31b",
+        "type": "ui_ui_control",
+        "z": "4db3dea499222145",
+        "name": "",
+        "events": "all",
+        "x": 460,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    }
+]
