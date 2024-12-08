@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';
-import 'screens/main_navigation.dart';
+import 'screens/settings_screen.dart';
+import 'screens/home_screen.dart'; // Feltételezve, hogy van egy főképernyő (HomeScreen)
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Bejelentkezés és Regisztráció',
+      theme: ThemeData(primarySwatch: Colors.blue),
+
+      // A kezdő képernyő
       initialRoute: '/login',
+
+      // Az alkalmazásban elérhető útvonalak
       routes: {
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegistrationScreen(),
-        '/home': (context) => MainNavigation(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegistrationScreen(),
+        '/settings': (context) => SettingsScreen(),
+        '/home': (context) => HomeScreen(), // Főképernyő például bejelentkezés után
       },
     );
   }

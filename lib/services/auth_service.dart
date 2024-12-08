@@ -1,50 +1,41 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final String baseUrl = "http://192.168.137.1:5000";
+  static const String baseUrl = "http://localhost:5000";
 
-  Future<bool> register(String name, String email, String password, String confirmPassword) async {
+  static Future<Map<String, dynamic>> login(String email, String password) async {
+    final url = Uri.parse("$baseUrl/login");
     final response = await http.post(
-      Uri.parse("$baseUrl/register"),
+      url,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
+      body: json.encode({"email": email, "password": password}),
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception(json.decode(response.body)['message']);
+    }
+  }
+
+  static Future<Map<String, dynamic>> register(String name, String email, String password, String confirmPassword) async {
+    final url = Uri.parse("$baseUrl/register");
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
         "name": name,
         "email": email,
         "password": password,
         "confirm_password": confirmPassword,
       }),
     );
-    return response.statusCode == 201;
-  }
 
-  Future<bool> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse("$baseUrl/login"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"email": email, "password": password}),
-    );
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", data["token"]);
-      return true;
+    if (response.statusCode == 201) {
+      return json.decode(response.body);
+    } else {
+      throw Exception(json.decode(response.body)['message']);
     }
-    return false;
-  }
-
-  Future<Map<String, dynamic>> getUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("token");
-
-    final response = await http.get(
-      Uri.parse("$baseUrl/user"),
-      headers: {"Authorization": "Bearer $token"},
-    );
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    }
-    return {};
   }
 }
