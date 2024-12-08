@@ -14,8 +14,8 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  int _currentIndex = 2; // Kezdeti képernyő: HomeScreen
-  bool _isLoading = false; // Jelzi, ha az adatok frissítése folyamatban van
+  int _currentIndex = 2; // Default screen: HomeScreen
+  bool _isLoading = false; // Indicates if data fetching is ongoing
 
   final List<Widget> _pages = [
     FireScreen(),
@@ -25,7 +25,6 @@ class _MainNavigationState extends State<MainNavigation> {
     SettingsScreen(),
   ];
 
-  // `ValueNotifier` használata az adatok frissítéséhez
   Map<String, ValueNotifier<Map<String, dynamic>>> roomData = {
     'Living Room': ValueNotifier({'temperature': 'N/A', 'humidity': 'N/A', 'switch': false}),
     'Bedroom': ValueNotifier({'temperature': 'N/A', 'humidity': 'N/A', 'switch': false}),
@@ -34,7 +33,12 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   void initState() {
     super.initState();
-    _startUpdatingData();
+    _initializeAppState(); // Initialize switch states and sensor data
+  }
+
+  void _initializeAppState() async {
+    await _fetchSwitchStates(); // Fetch initial switch states
+    _startUpdatingData(); // Start automatic data refresh
   }
 
   void _startUpdatingData() {
@@ -44,7 +48,8 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   Future<void> _fetchRoomData() async {
-    if (_isLoading) return; // Ha már frissít, nem kezd új frissítést
+    if (_isLoading) return;
+
     setState(() {
       _isLoading = true;
     });
@@ -56,7 +61,6 @@ class _MainNavigationState extends State<MainNavigation> {
       if (response.statusCode == 200) {
         final List<dynamic> sensors = jsonDecode(response.body);
 
-        // Frissítjük a `ValueNotifier` értékeit
         for (var sensor in sensors) {
           if (sensor['name'] == 'Sensor 1') {
             roomData['Living Room']!.value = {
@@ -84,6 +88,110 @@ class _MainNavigationState extends State<MainNavigation> {
     }
   }
 
+  Future<void> _fetchSwitchStates() async {
+    final url = Uri.parse('http://192.168.137.1:5000/switch_states');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> switchStates = jsonDecode(response.body);
+
+        setState(() {
+          roomData['Living Room']!.value = {
+            ...roomData['Living Room']!.value,
+            'switch': switchStates['1'] == 'ON',
+          };
+          roomData['Bedroom']!.value = {
+            ...roomData['Bedroom']!.value,
+            'switch': switchStates['2'] == 'ON',
+          };
+        });
+      } else {
+        print('Failed to fetch switch states. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching switch states: $e');
+    }
+  }
+
+  Widget _buildRoomCard(String roomName) {
+    return ValueListenableBuilder(
+      valueListenable: roomData[roomName]!,
+      builder: (context, data, child) {
+        final temperature = data['temperature'];
+        final humidity = data['humidity'];
+        final isSwitchOn = data['switch'];
+
+        return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.thermostat, size: 25, color: Colors.blue),
+                SizedBox(height: 4),
+                Text(roomName, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                SizedBox(height: 4),
+                Text('Temp: $temperature°C', style: TextStyle(fontSize: 10)),
+                Text('Humidity: $humidity%', style: TextStyle(fontSize: 10)),
+                SizedBox(height: 4),
+                Switch(
+                  value: isSwitchOn,
+                  onChanged: (_) => _toggleSwitch(roomName),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildHomeScreen() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Rooms', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              if (_isLoading) CircularProgressIndicator(),
+            ],
+          ),
+        ),
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 3, // Display elements in three columns
+            crossAxisSpacing: 6,
+            mainAxisSpacing: 6,
+            childAspectRatio: 0.8, // Adjust width/height ratio
+            padding: const EdgeInsets.all(12),
+            children: [
+              _buildRoomCard('Living Room'),
+              _buildRoomCard('Bedroom'),
+              _buildEmptyWidget('Empty Widget 1'),
+              _buildEmptyWidget('Empty Widget 2'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyWidget(String label) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 2,
+      child: Center(
+        child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+
   Future<void> _toggleSwitch(String roomName) async {
     final switchState = roomData[roomName]!.value['switch'];
     final switchId = roomName == 'Living Room' ? '1' : '2';
@@ -109,80 +217,6 @@ class _MainNavigationState extends State<MainNavigation> {
     }
   }
 
-  Widget _buildRoomCard(String roomName) {
-    return ValueListenableBuilder(
-      valueListenable: roomData[roomName]!,
-      builder: (context, data, child) {
-        final temperature = data['temperature'];
-        final humidity = data['humidity'];
-        final isSwitchOn = data['switch'];
-
-        return Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.thermostat,
-                  size: 40,
-                  color: Colors.blue,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  roomName,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8),
-                Text('Temp: $temperature°C'),
-                Text('Humidity: $humidity%'),
-                SizedBox(height: 8),
-                Switch(
-                  value: isSwitchOn,
-                  onChanged: (_) => _toggleSwitch(roomName),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildHomeScreen() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Rooms',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              if (_isLoading) CircularProgressIndicator(),
-            ],
-          ),
-        ),
-        Expanded(
-          child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            padding: const EdgeInsets.all(16),
-            children: [
-              _buildRoomCard('Living Room'),
-              _buildRoomCard('Bedroom'),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   void _onTabTapped(int index) {
     if (index >= 0 && index < _pages.length) {
       setState(() {
@@ -200,46 +234,34 @@ class _MainNavigationState extends State<MainNavigation> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            _currentIndex = 2; // Vissza a HomeScreen-re
+            _currentIndex = 2;
           });
         },
         backgroundColor: _currentIndex == 2 ? Colors.blue : Colors.grey,
-        child: Icon(Icons.home, size: 32),
+        child: Icon(Icons.home, size: 28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 8.0,
+        notchMargin: 6.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(
-                Icons.local_fire_department,
-                color: _currentIndex == 0 ? Colors.blue : Colors.grey,
-              ),
+              icon: Icon(Icons.local_fire_department, color: _currentIndex == 0 ? Colors.blue : Colors.grey),
               onPressed: () => _onTabTapped(0),
             ),
             IconButton(
-              icon: Icon(
-                Icons.lightbulb,
-                color: _currentIndex == 1 ? Colors.blue : Colors.grey,
-              ),
+              icon: Icon(Icons.lightbulb, color: _currentIndex == 1 ? Colors.blue : Colors.grey),
               onPressed: () => _onTabTapped(1),
             ),
-            SizedBox(width: 48),
+            SizedBox(width: 40),
             IconButton(
-              icon: Icon(
-                Icons.water,
-                color: _currentIndex == 3 ? Colors.blue : Colors.grey,
-              ),
+              icon: Icon(Icons.water, color: _currentIndex == 3 ? Colors.blue : Colors.grey),
               onPressed: () => _onTabTapped(3),
             ),
             IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: _currentIndex == 4 ? Colors.blue : Colors.grey,
-              ),
+              icon: Icon(Icons.settings, color: _currentIndex == 4 ? Colors.blue : Colors.grey),
               onPressed: () => _onTabTapped(4),
             ),
           ],

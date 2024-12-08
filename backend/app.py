@@ -323,6 +323,22 @@ def set_switch(switch_id):
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+@app.route("/switch_states", methods=["GET"])
+def get_switch_states():
+    """
+    Visszaadja az összes kapcsoló aktuális állapotát.
+    """
+    try:
+        # A `switch_states` globális változóból olvassuk ki az állapotokat
+        switch_states_response = {
+            switch_id: "ON" if state else "OFF"
+            for switch_id, state in switch_states.items()
+        }
+        return jsonify(switch_states_response), 200
+    except Exception as e:
+        print(f"Error fetching switch states: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
 # MQTT kapcsolat beállítása
 client = mqtt.Client()
 client.on_message = on_message
