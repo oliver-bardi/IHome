@@ -388,12 +388,12 @@ class WeatherWidget extends StatelessWidget {
     // Ha az adatok elérhetők
     final String location = weatherData!['name']; // Város neve
     final String description = weatherData!['weather'][0]['description'];
-    final double temperature = weatherData!['main']['temp'] - 273.15; // Kelvin -> Celsius
-    final double tempMin = weatherData!['main']['temp_min'] - 273.15;
-    final double tempMax = weatherData!['main']['temp_max'] - 273.15;
-    final int humidity = weatherData!['main']['humidity'];
-    final double windSpeed = weatherData!['wind']['speed'];
-    final int pressure = weatherData!['main']['pressure'];
+    final double temperature = (weatherData!['main']['temp'] as num).toDouble() - 273.15; // Kelvin -> Celsius
+    final double tempMin = (weatherData!['main']['temp_min'] as num).toDouble() - 273.15;
+    final double tempMax = (weatherData!['main']['temp_max'] as num).toDouble() - 273.15;
+    final double humidity = (weatherData!['main']['humidity'] as num).toDouble(); // Always cast as double
+    final double windSpeed = (weatherData!['wind']['speed'] as num).toDouble();
+    final double pressure = (weatherData!['main']['pressure'] as num).toDouble();
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
