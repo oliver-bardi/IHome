@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'fire_screen.dart';
 import 'home_screen.dart';
 import 'light_screen.dart';
@@ -9,13 +10,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
   @override
   _MainNavigationState createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 2; // Default screen: HomeScreen
-  bool _isLoading = false; // Indicates if data fetching is ongoing
+  bool _isLoading = false; // Loading state
+  Map<String, dynamic>? weatherData;
 
   final List<Widget> _pages = [
     FireScreen(),
@@ -33,17 +37,19 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   void initState() {
     super.initState();
-    _initializeAppState(); // Initialize switch states and sensor data
+    _initializeAppState();
+    _fetchWeatherData();
   }
 
-  void _initializeAppState() async {
-    await _fetchSwitchStates(); // Fetch initial switch states
-    _startUpdatingData(); // Start automatic data refresh
+  void _initializeAppState() {
+    _fetchSwitchStates();
+    _startUpdatingData();
   }
 
   void _startUpdatingData() {
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
       _fetchRoomData();
+      _fetchSwitchStates();
     });
   }
 
@@ -115,82 +121,117 @@ class _MainNavigationState extends State<MainNavigation> {
     }
   }
 
-  Widget _buildRoomCard(String roomName) {
-    return ValueListenableBuilder(
-      valueListenable: roomData[roomName]!,
-      builder: (context, data, child) {
-        final temperature = data['temperature'];
-        final humidity = data['humidity'];
-        final isSwitchOn = data['switch'];
+  Future<void> _fetchWeatherData() async {
+    const apiKey = '53ccc9f9f08ce779ae096346f1a630c4'; // API kulcs
+    const city = "Târgu Mureș";
+    final Uri url = Uri.parse("https://api.openweathermap.org/data/2.5/weather?q=$city&APPID=$apiKey");
 
-        return Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.thermostat, size: 25, color: Colors.blue),
-                SizedBox(height: 4),
-                Text(roomName, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                SizedBox(height: 4),
-                Text('Temp: $temperature°C', style: TextStyle(fontSize: 10)),
-                Text('Humidity: $humidity%', style: TextStyle(fontSize: 10)),
-                SizedBox(height: 4),
-                Switch(
-                  value: isSwitchOn,
-                  onChanged: (_) => _toggleSwitch(roomName),
-                ),
-              ],
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setState(() {
+          weatherData = jsonDecode(response.body);
+        });
+      } else {
+        print('Failed to fetch weather data: ${response.statusCode}');
+        setState(() {
+          weatherData = null; // Ha nincs adat
+        });
+      }
+    } catch (e) {
+      print('Error fetching weather data: $e');
+      setState(() {
+        weatherData = null; // Ha hiba történik
+      });
+    }
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: _currentIndex == 2 ? _buildHomeScreen() : _pages[_currentIndex],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _currentIndex = 2;
+          });
+        },
+        backgroundColor: _currentIndex == 2 ? Colors.blue : Colors.grey,
+        child: const Icon(Icons.home, size: 28),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 6.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(Icons.local_fire_department, color: _currentIndex == 0 ? Colors.blue : Colors.grey),
+              onPressed: () => _onTabTapped(0),
             ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildHomeScreen() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Rooms', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              if (_isLoading) CircularProgressIndicator(),
-            ],
-          ),
+            IconButton(
+              icon: Icon(Icons.lightbulb, color: _currentIndex == 1 ? Colors.blue : Colors.grey),
+              onPressed: () => _onTabTapped(1),
+            ),
+            const SizedBox(width: 40),
+            IconButton(
+              icon: Icon(Icons.water, color: _currentIndex == 3 ? Colors.blue : Colors.grey),
+              onPressed: () => _onTabTapped(3),
+            ),
+            IconButton(
+              icon: Icon(Icons.settings, color: _currentIndex == 4 ? Colors.blue : Colors.grey),
+              onPressed: () => _onTabTapped(4),
+            ),
+          ],
         ),
-        Expanded(
-          child: GridView.count(
-            crossAxisCount: 3, // Display elements in three columns
-            crossAxisSpacing: 6,
-            mainAxisSpacing: 6,
-            childAspectRatio: 0.8, // Adjust width/height ratio
-            padding: const EdgeInsets.all(12),
-            children: [
-              _buildRoomCard('Living Room'),
-              _buildRoomCard('Bedroom'),
-              _buildEmptyWidget('Empty Widget 1'),
-              _buildEmptyWidget('Empty Widget 2'),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEmptyWidget(String label) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      elevation: 2,
-      child: Center(
-        child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
       ),
     );
   }
+
+  void _onTabTapped(int index) {
+    if (index >= 0 && index < _pages.length) {
+      setState(() {
+        _currentIndex = index;
+      });
+    } else {
+      print('Invalid index: $index');
+    }
+  }
+
+  Widget _buildHomeScreen() {
+    List<Widget> widgets = [
+      WeatherWidget(weatherData: weatherData), // Dinamikusan kezeli az adatokat
+      //EmptyWidget(),
+      RoomWidget(
+        roomName: 'Living Room',
+        roomData: roomData['Living Room']!,
+        onToggleSwitch: _toggleSwitch,
+      ),
+      RoomWidget(
+        roomName: 'Bedroom',
+        roomData: roomData['Bedroom']!,
+        onToggleSwitch: _toggleSwitch,
+      ),
+    ];
+
+    return ReorderableListView(
+      onReorder: (int oldIndex, int newIndex) {
+        setState(() {
+          if (newIndex > oldIndex) newIndex -= 1;
+          final Widget item = widgets.removeAt(oldIndex);
+          widgets.insert(newIndex, item);
+        });
+      },
+      children: widgets.map((widget) => Container(key: ValueKey(widget), child: widget)).toList(),
+    );
+  }
+
+
 
   Future<void> _toggleSwitch(String roomName) async {
     final switchState = roomData[roomName]!.value['switch'];
@@ -205,10 +246,7 @@ class _MainNavigationState extends State<MainNavigation> {
       );
 
       if (response.statusCode == 200) {
-        roomData[roomName]!.value = {
-          ...roomData[roomName]!.value,
-          'switch': !switchState,
-        };
+        await _fetchSwitchStates(); // Immediately fetch updated states
       } else {
         print('Failed to toggle switch. Status code: ${response.statusCode}');
       }
@@ -216,57 +254,258 @@ class _MainNavigationState extends State<MainNavigation> {
       print('Error toggling switch: $e');
     }
   }
+}
 
-  void _onTabTapped(int index) {
-    if (index >= 0 && index < _pages.length) {
-      setState(() {
-        _currentIndex = index;
-      });
-    } else {
-      print('Invalid index: $index');
-    }
-  }
+class EmptyWidget extends StatelessWidget {
+  const EmptyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _currentIndex == 2 ? _buildHomeScreen() : _pages[_currentIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _currentIndex = 2;
-          });
-        },
-        backgroundColor: _currentIndex == 2 ? Colors.blue : Colors.grey,
-        child: Icon(Icons.home, size: 28),
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 2,
+      child: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: Text(
+            'Empty Widget',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 6.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    );
+  }
+}
+
+class RoomWidget extends StatelessWidget {
+  final String roomName;
+  final ValueNotifier<Map<String, dynamic>> roomData;
+  final Function(String) onToggleSwitch;
+
+  const RoomWidget({super.key,
+    required this.roomName,
+    required this.roomData,
+    required this.onToggleSwitch,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<Map<String, dynamic>>(
+      valueListenable: roomData,
+      builder: (context, data, child) {
+        final temperature = data['temperature'] ?? 'N/A';
+        final humidity = data['humidity'] ?? 'N/A';
+        final isSwitchOn = data['switch'] ?? false;
+
+        return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  roomName,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CircularPercentIndicator(
+                      radius: 80.0,
+                      lineWidth: 10.0,
+                      percent: _calculatePercent(temperature),
+                      center: Text(
+                        "$temperature°C",
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      progressColor: Colors.orangeAccent,
+                      backgroundColor: Colors.grey[300]!,
+                    ),
+                    CircularPercentIndicator(
+                      radius: 80.0,
+                      lineWidth: 10.0,
+                      percent: _calculatePercent(humidity),
+                      center: Text(
+                        "$humidity%",
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      progressColor: Colors.blueAccent,
+                      backgroundColor: Colors.grey[300]!,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                GestureDetector(
+                  onTap: () => onToggleSwitch(roomName),
+                  child: Icon(
+                    Icons.lightbulb,
+                    size: 40,
+                    color: isSwitchOn ? Colors.yellow : Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  double _calculatePercent(dynamic value) {
+    if (value == 'N/A') return 0.0;
+    double numericValue = double.tryParse(value.toString()) ?? 0.0;
+    return (numericValue / 100).clamp(0.0, 1.0);
+  }
+}
+
+class WeatherWidget extends StatelessWidget {
+  final Map<String, dynamic>? weatherData;
+
+  const WeatherWidget({super.key, required this.weatherData});
+
+  @override
+  Widget build(BuildContext context) {
+    // Ha az adatok nem érhetők el
+    if (weatherData == null) {
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 2,
+        child: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Center(
+            child: Text(
+              'Weather data is not available.',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Ha az adatok elérhetők
+    final String location = weatherData!['name']; // Város neve
+    final String description = weatherData!['weather'][0]['description'];
+    final double temperature = weatherData!['main']['temp'] - 273.15; // Kelvin -> Celsius
+    final double tempMin = weatherData!['main']['temp_min'] - 273.15;
+    final double tempMax = weatherData!['main']['temp_max'] - 273.15;
+    final int humidity = weatherData!['main']['humidity'];
+    final double windSpeed = weatherData!['wind']['speed'];
+    final int pressure = weatherData!['main']['pressure'];
+
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconButton(
-              icon: Icon(Icons.local_fire_department, color: _currentIndex == 0 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(0),
+            // Helyiség neve (pl. város)
+            Text(
+              location,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            IconButton(
-              icon: Icon(Icons.lightbulb, color: _currentIndex == 1 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(1),
+            const SizedBox(height: 8),
+
+            // Fő cím
+            const Text(
+              'Weather Overview',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(width: 40),
-            IconButton(
-              icon: Icon(Icons.water, color: _currentIndex == 3 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(3),
+            const SizedBox(height: 16),
+
+            // Időjárás leírása
+            Text(
+              'The weather is $description.',
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            IconButton(
-              icon: Icon(Icons.settings, color: _currentIndex == 4 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(4),
+            const SizedBox(height: 16),
+
+            // Hőmérséklet, páratartalom és szélsebesség kördiagramok
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildCircularIndicator(
+                  value: temperature / 50, // Hőmérséklet max 50°C feltételezve
+                  label: '${temperature.toStringAsFixed(1)}°C',
+                  title: 'Temp',
+                  progressColor: Colors.orange,
+                ),
+                _buildCircularIndicator(
+                  value: humidity / 100, // Páratartalom max 100%
+                  label: '$humidity%',
+                  title: 'Humidity',
+                  progressColor: Colors.blue,
+                ),
+                _buildCircularIndicator(
+                  value: windSpeed / 20, // Szélsebesség max 20 m/s feltételezve
+                  label: '${windSpeed.toStringAsFixed(1)} m/s',
+                  title: 'Wind',
+                  progressColor: Colors.green,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // További részletek
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Min Temp: ${tempMin.toStringAsFixed(1)}°C'),
+                Text('Max Temp: ${tempMax.toStringAsFixed(1)}°C'),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Pressure: $pressure hPa'),
+                Text('Wind: ${windSpeed.toStringAsFixed(1)} m/s'),
+              ],
             ),
           ],
         ),
       ),
     );
   }
+
+  // Helper function to create a circular indicator
+  Widget _buildCircularIndicator({
+    required double value,
+    required String label,
+    required String title,
+    required Color progressColor,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircularPercentIndicator(
+          radius: 50.0, // Kisebb méret
+          lineWidth: 8.0,
+          percent: value.clamp(0.0, 1.0), // Clamp az érték helyes határok között tartására
+          center: Text(
+            label,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          progressColor: progressColor,
+          backgroundColor: Colors.grey[300]!,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
 }
+
+
+
+
+
+
+
