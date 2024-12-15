@@ -21,11 +21,12 @@ def get_local_time():
 def reconnect_db():
     global db, cursor
     try:
-        print("Reconnecting to MySQL...")
+        if db.is_connected():
+            db.close()
         db = mysql.connector.connect(
-            host="192.168.137.1",  # IP-cím
-            user="root",  # MySQL felhasználónév
-            password="rootpassword",  # MySQL jelszó
+            host="mysql-container",  # A docker-compose szolgáltatás neve
+            user="root",
+            password="rootpassword",
             database="home_automation"
         )
         cursor = db.cursor()
@@ -33,6 +34,7 @@ def reconnect_db():
     except mysql.connector.Error as err:
         print(f"Error reconnecting to MySQL: {err}")
         exit()
+
 
 def wait_for_db(timeout=30):
     """Várakozás az adatbázis elérhetőségére."""

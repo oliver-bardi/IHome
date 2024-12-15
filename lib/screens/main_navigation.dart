@@ -9,6 +9,30 @@ import 'settings_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// Konfigurációs változók a kapcsolók ID-jéhez
+final int livingRoomSwitchId = 0; // Living Room-hoz a 0-ás kapcsoló
+final int bedroomSwitchId = 2;    // Bedroom-hoz a 2-es kapcsoló
+final int livingRoomWindowsSwitchId = 1; // Living Room ablak
+final int bedroomWindowsSwitchId = 3;   // Bedroom ablak
+final int shuttersSwitchId = 4;         // Redőnyök
+final int vacuumSwitchId = 5;           // Robotporszívó
+final int powerCutSwitchId = 6;         // Összes fogyasztó lekapcsolása
+final int garageDoorSwitchId = 7;       // Garázsnyitó
+final int vacationModeSwitchId = 8;     // Vakációs mód
+final int securitySystemSwitchId = 9;   // Biztonsági rendszer
+
+Map<String, ValueNotifier<bool>> switchStates = {
+  'Living Room Windows': ValueNotifier(false),
+  'Bedroom Windows': ValueNotifier(false),
+  'Shutters': ValueNotifier(false),
+  'Vacuum': ValueNotifier(false),
+  'Power Cut': ValueNotifier(false),
+  'Garage Door': ValueNotifier(false),
+  'Vacation Mode': ValueNotifier(false),
+  'Security System': ValueNotifier(false),
+};
+
+
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
@@ -37,9 +61,12 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   void initState() {
     super.initState();
-    _initializeAppState();
-    _fetchWeatherData();
+    _fetchSwitchStates(); // Kezdeti állapotlekérés
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      _fetchSwitchStates(); // 5 másodpercenként frissítjük az állapotokat
+    });
   }
+
 
   void _initializeAppState() {
     _fetchSwitchStates();
@@ -47,7 +74,7 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   void _startUpdatingData() {
-    Timer.periodic(const Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       _fetchRoomData();
       _fetchSwitchStates();
     });
@@ -101,25 +128,40 @@ class _MainNavigationState extends State<MainNavigation> {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> switchStates = jsonDecode(response.body);
+        final Map<String, dynamic> states = jsonDecode(response.body);
 
         setState(() {
+          // Frissítsük a ControlWidget kapcsolóit
+          switchStates['Living Room Windows']!.value = states['$livingRoomWindowsSwitchId'] == 'ON';
+          switchStates['Bedroom Windows']!.value = states['$bedroomWindowsSwitchId'] == 'ON';
+          switchStates['Shutters']!.value = states['$shuttersSwitchId'] == 'ON';
+          switchStates['Vacuum']!.value = states['$vacuumSwitchId'] == 'ON';
+          switchStates['Power Cut']!.value = states['$powerCutSwitchId'] == 'ON';
+          switchStates['Garage Door']!.value = states['$garageDoorSwitchId'] == 'ON';
+          switchStates['Vacation Mode']!.value = states['$vacationModeSwitchId'] == 'ON';
+          switchStates['Security System']!.value = states['$securitySystemSwitchId'] == 'ON';
+
+          // Frissítsük a Living Room és Bedroom lámpakapcsolók állapotát
           roomData['Living Room']!.value = {
             ...roomData['Living Room']!.value,
-            'switch': switchStates['1'] == 'ON',
+            'switch': states['$livingRoomSwitchId'] == 'ON',
           };
+
           roomData['Bedroom']!.value = {
             ...roomData['Bedroom']!.value,
-            'switch': switchStates['2'] == 'ON',
+            'switch': states['$bedroomSwitchId'] == 'ON',
           };
         });
       } else {
-        print('Failed to fetch switch states. Status code: ${response.statusCode}');
+        print('Failed to fetch switch states: ${response.statusCode}');
       }
     } catch (e) {
       print('Error fetching switch states: $e');
     }
   }
+
+
+
 
   Future<void> _fetchWeatherData() async {
     const apiKey = '53ccc9f9f08ce779ae096346f1a630c4'; // API kulcs
@@ -205,8 +247,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   Widget _buildHomeScreen() {
     List<Widget> widgets = [
-      WeatherWidget(weatherData: weatherData), // Dinamikusan kezeli az adatokat
-      //EmptyWidget(),
+      WeatherWidget(weatherData: weatherData), // Időjárás widget
       RoomWidget(
         roomName: 'Living Room',
         roomData: roomData['Living Room']!,
@@ -217,6 +258,7 @@ class _MainNavigationState extends State<MainNavigation> {
         roomData: roomData['Bedroom']!,
         onToggleSwitch: _toggleSwitch,
       ),
+      ControlWidget(onToggle: _toggleControlSwitch), // Új widget itt kerül hozzáadásra
     ];
 
     return ReorderableListView(
@@ -233,27 +275,36 @@ class _MainNavigationState extends State<MainNavigation> {
 
 
 
+
   Future<void> _toggleSwitch(String roomName) async {
-    final switchState = roomData[roomName]!.value['switch'];
-    final switchId = roomName == 'Living Room' ? '1' : '2';
+    final currentState = roomData[roomName]!.value['switch'];
+    final switchId = roomName == 'Living Room' ? livingRoomSwitchId : bedroomSwitchId;
 
     try {
       final url = Uri.parse('http://192.168.137.1:5000/switches/$switchId');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'state': switchState ? 'OFF' : 'ON'}),
+        body: jsonEncode({'state': currentState ? 'OFF' : 'ON'}),
       );
 
       if (response.statusCode == 200) {
-        await _fetchSwitchStates(); // Immediately fetch updated states
+        // Azonnal frissítsük a lámpa állapotát
+        roomData[roomName]!.value = {
+          ...roomData[roomName]!.value,
+          'switch': !currentState,
+        };
+
+        // Kérjünk friss adatokat a szervertől
+        await _fetchSwitchStates();
       } else {
-        print('Failed to toggle switch. Status code: ${response.statusCode}');
+        print('Failed to toggle $roomName switch: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error toggling switch: $e');
+      print('Error toggling $roomName switch: $e');
     }
   }
+
 }
 
 class EmptyWidget extends StatelessWidget {
@@ -500,5 +551,108 @@ class WeatherWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class ControlWidget extends StatelessWidget {
+  final Function(String) onToggle;
+
+  const ControlWidget({super.key, required this.onToggle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 3,
+      child: Column(
+        children: [
+          const ListTile(
+            title: Text(
+              'Smart Controls',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text('Manage your home devices'),
+          ),
+          const Divider(),
+          _buildSwitchRow('Living Room Windows', Icons.window),
+          _buildSwitchRow('Bedroom Windows', Icons.window),
+          _buildSwitchRow('Shutters', Icons.shutter_speed),
+          _buildSwitchRow('Vacuum', Icons.cleaning_services),
+          _buildSwitchRow('Power Cut', Icons.power_off),
+          _buildSwitchRow('Garage Door', Icons.garage),
+          _buildSwitchRow('Vacation Mode', Icons.beach_access),
+          _buildSwitchRow('Security System', Icons.security),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwitchRow(String name, IconData icon) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: switchStates[name]!,
+      builder: (context, value, _) {
+        return ListTile(
+          leading: Icon(icon, size: 30, color: value ? Colors.green : Colors.grey),
+          title: Text(name),
+          trailing: Switch(
+            value: value,
+            onChanged: (bool newValue) => onToggle(name),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Kapcsolók kezelése a főosztályban
+Future<void> _toggleControlSwitch(String controlName) async {
+  int switchId;
+  switch (controlName) {
+    case 'Living Room Windows':
+      switchId = livingRoomWindowsSwitchId;
+      break;
+    case 'Bedroom Windows':
+      switchId = bedroomWindowsSwitchId;
+      break;
+    case 'Shutters':
+      switchId = shuttersSwitchId;
+      break;
+    case 'Vacuum':
+      switchId = vacuumSwitchId;
+      break;
+    case 'Power Cut':
+      switchId = powerCutSwitchId;
+      break;
+    case 'Garage Door':
+      switchId = garageDoorSwitchId;
+      break;
+    case 'Vacation Mode':
+      switchId = vacationModeSwitchId;
+      break;
+    case 'Security System':
+      switchId = securitySystemSwitchId;
+      break;
+    default:
+      print('Unknown control name: $controlName');
+      return;
+  }
+
+  final currentState = switchStates[controlName]!.value;
+  try {
+    final url = Uri.parse('http://192.168.137.1:5000/switches/$switchId');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'state': currentState ? 'OFF' : 'ON'}),
+    );
+
+    if (response.statusCode == 200) {
+      switchStates[controlName]!.value = !currentState;
+    } else {
+      print('Failed to toggle $controlName: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error toggling $controlName: $e');
   }
 }

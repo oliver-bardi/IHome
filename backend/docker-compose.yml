@@ -1,17 +1,19 @@
-version: '3.8'
-
 services:
   mqtt:
     image: eclipse-mosquitto
     container_name: mqtt-broker
     ports:
-      - "1883:1883"  # MQTT alapértelmezett port
-      - "9001:9001"  # WebSocket port (ha szükséges)
+      - "1883:1883"
+      - "9001:9001"
     volumes:
       - "./mosquitto_config/mosquitto.conf:/mosquitto/config/mosquitto.conf"
     networks:
       - mqtt_network
-
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep mosquitto || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   mysql:
     image: mysql:8.0
@@ -20,43 +22,44 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: home_automation
     ports:
-      - "3306:3306"  # MySQL alapértelmezett port
+      - "3306:3306"
     volumes:
       - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
     networks:
       - mqtt_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   python-backend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: python-backend
-    mem_reservation: 256m
     ports:
-      - "5000:5000"  # Flask port
-    depends_on:
-      - mqtt
-      - mysql
-    networks:
-      - mqtt_network
+      - "5000:5000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   node-red:
     image: nodered/node-red:latest
     container_name: node-red
     ports:
-      - "1880:1880"  # Node-RED default port
-#    volumes:
-#      - "./node-red-data:/data"  # Persistent storage for Node-RED
+      - "1880:1880"
     environment:
-      - NODE_RED_ENABLE_PROJECTS=true  # Enable Node-RED projects
-      - TZ=Europe/Budapest  # Timezone
-    user: "1000:1000"  # Run as non-root user
+      - NODE_RED_ENABLE_PROJECTS=true
+      - TZ=Europe/Budapest
+    user: "1000:1000"
     depends_on:
       - mqtt
       - mysql
     networks:
       - mqtt_network
-
 
 networks:
   mqtt_network:
