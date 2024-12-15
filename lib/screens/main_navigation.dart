@@ -502,10 +502,3 @@ class WeatherWidget extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-

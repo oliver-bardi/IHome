@@ -31,6 +31,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: python-backend
+    mem_reservation: 256m
     ports:
       - "5000:5000"  # Flask port
     depends_on:
@@ -43,17 +44,19 @@ services:
     image: nodered/node-red:latest
     container_name: node-red
     ports:
-      - "1880:1880"  # Node-RED alapértelmezett port
-    volumes:
-      - "./node-red-data:/data"  # Tartós tárolás a Node-RED számára
+      - "1880:1880"  # Node-RED default port
+#    volumes:
+#      - "./node-red-data:/data"  # Persistent storage for Node-RED
     environment:
-      - NODE_RED_ENABLE_PROJECTS=true  # Node-RED projektek engedélyezése
-      - TZ=Europe/Budapest  # Időzóna beállítása
+      - NODE_RED_ENABLE_PROJECTS=true  # Enable Node-RED projects
+      - TZ=Europe/Budapest  # Timezone
+    user: "1000:1000"  # Run as non-root user
     depends_on:
       - mqtt
       - mysql
     networks:
       - mqtt_network
+
 
 networks:
   mqtt_network:
