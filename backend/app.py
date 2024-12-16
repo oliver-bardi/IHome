@@ -73,7 +73,7 @@ except mysql.connector.Error as err:
     exit()
 
 # Switch states
-switch_states = {f"{i}": False for i in range(15)}
+switch_states = {f"{i}": False for i in range(16)}
 
 # Funkció a kapcsolók állapotának mentésére az adatbázisba
 def save_switch_state_to_db(switch_name, state):

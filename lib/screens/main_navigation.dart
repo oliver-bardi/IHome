@@ -1,36 +1,47 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'fire_screen.dart';
-import 'home_screen.dart';
-import 'light_screen.dart';
-import 'water_screen.dart';
+import 'control_screen.dart';
 import 'settings_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Konfigurációs változók a kapcsolók ID-jéhez
 final int livingRoomSwitchId = 0; // Living Room-hoz a 0-ás kapcsoló
-final int bedroomSwitchId = 2;    // Bedroom-hoz a 2-es kapcsoló
 final int livingRoomWindowsSwitchId = 1; // Living Room ablak
+final int bedroomSwitchId = 2;    // Bedroom-hoz a 2-es kapcsoló
 final int bedroomWindowsSwitchId = 3;   // Bedroom ablak
 final int shuttersSwitchId = 4;         // Redőnyök
-final int vacuumSwitchId = 5;           // Robotporszívó
+final int garageDoorSwitchId = 5;       // Garázsnyitó
 final int powerCutSwitchId = 6;         // Összes fogyasztó lekapcsolása
-final int garageDoorSwitchId = 7;       // Garázsnyitó
-final int vacationModeSwitchId = 8;     // Vakációs mód
+final int outsideLighting = 7;         //Kültéri világítás
+final int vacationModeSwitchId = 8;      // Vakáció
 final int securitySystemSwitchId = 9;   // Biztonsági rendszer
+final int coffeMachineId = 10;           //  Kávéföző
+final int gadrenWateringId = 11;          //  Öntözés
+final int carChargingId = 12;             //  Kocsi töltő
+final int heatingId = 13;                 // Fűtés
+final int coolingId = 14;                  // Hégkondi
+final int motionDetectorsId = 15;          //  Mozgásérzékeés
+
 
 Map<String, ValueNotifier<bool>> switchStates = {
   'Living Room Windows': ValueNotifier(false),
   'Bedroom Windows': ValueNotifier(false),
   'Shutters': ValueNotifier(false),
-  'Vacuum': ValueNotifier(false),
-  'Power Cut': ValueNotifier(false),
   'Garage Door': ValueNotifier(false),
+  'Power Cut': ValueNotifier(false),
+  'Outside Lighting': ValueNotifier(false),
   'Vacation Mode': ValueNotifier(false),
   'Security System': ValueNotifier(false),
+  'Coffee Machine': ValueNotifier(false),
+  'Garden Watering': ValueNotifier(false),
+  'Car Charging': ValueNotifier(false),
+  'Heating': ValueNotifier(false),
+  'Cooling': ValueNotifier(false),
+  'Motion Detectors': ValueNotifier(false),
 };
+
 
 
 class MainNavigation extends StatefulWidget {
@@ -46,10 +57,7 @@ class _MainNavigationState extends State<MainNavigation> {
   Map<String, dynamic>? weatherData;
 
   final List<Widget> _pages = [
-    FireScreen(),
-    LightScreen(),
-    HomeScreen(),
-    WaterScreen(),
+    ControlScreen(),
     SettingsScreen(),
   ];
 
@@ -62,23 +70,13 @@ class _MainNavigationState extends State<MainNavigation> {
   void initState() {
     super.initState();
     _fetchSwitchStates(); // Kezdeti állapotlekérés
+    _fetchWeatherData();
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      _fetchSwitchStates(); // 5 másodpercenként frissítjük az állapotokat
-    });
-  }
-
-
-  void _initializeAppState() {
-    _fetchSwitchStates();
-    _startUpdatingData();
-  }
-
-  void _startUpdatingData() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+      _fetchSwitchStates(); // 1 másodpercenként frissítjük az állapotokat
       _fetchRoomData();
-      _fetchSwitchStates();
     });
   }
+
 
   Future<void> _fetchRoomData() async {
     if (_isLoading) return;
@@ -130,28 +128,10 @@ class _MainNavigationState extends State<MainNavigation> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> states = jsonDecode(response.body);
 
-        setState(() {
-          // Frissítsük a ControlWidget kapcsolóit
-          switchStates['Living Room Windows']!.value = states['$livingRoomWindowsSwitchId'] == 'ON';
-          switchStates['Bedroom Windows']!.value = states['$bedroomWindowsSwitchId'] == 'ON';
-          switchStates['Shutters']!.value = states['$shuttersSwitchId'] == 'ON';
-          switchStates['Vacuum']!.value = states['$vacuumSwitchId'] == 'ON';
-          switchStates['Power Cut']!.value = states['$powerCutSwitchId'] == 'ON';
-          switchStates['Garage Door']!.value = states['$garageDoorSwitchId'] == 'ON';
-          switchStates['Vacation Mode']!.value = states['$vacationModeSwitchId'] == 'ON';
-          switchStates['Security System']!.value = states['$securitySystemSwitchId'] == 'ON';
-
-          // Frissítsük a Living Room és Bedroom lámpakapcsolók állapotát
-          roomData['Living Room']!.value = {
-            ...roomData['Living Room']!.value,
-            'switch': states['$livingRoomSwitchId'] == 'ON',
-          };
-
-          roomData['Bedroom']!.value = {
-            ...roomData['Bedroom']!.value,
-            'switch': states['$bedroomSwitchId'] == 'ON',
-          };
-        });
+        for (var entry in switchStates.keys) {
+          int id = _getSwitchId(entry);
+          switchStates[entry]!.value = states['$id'] == 'ON';
+        }
       } else {
         print('Failed to fetch switch states: ${response.statusCode}');
       }
@@ -159,6 +139,27 @@ class _MainNavigationState extends State<MainNavigation> {
       print('Error fetching switch states: $e');
     }
   }
+
+  int _getSwitchId(String name) {
+    switch (name) {
+      case 'Living Room Windows': return livingRoomWindowsSwitchId;
+      case 'Bedroom Windows': return bedroomWindowsSwitchId;
+      case 'Shutters': return shuttersSwitchId;
+      case 'Garage Door': return garageDoorSwitchId;
+      case 'Power Cut': return powerCutSwitchId;
+      case 'Outside Lighting': return outsideLighting;
+      case 'Vacation Mode': return vacationModeSwitchId;
+      case 'Security System': return securitySystemSwitchId;
+      case 'Coffee Machine': return coffeMachineId;
+      case 'Garden Watering': return gadrenWateringId;
+      case 'Car Charging': return carChargingId;
+      case 'Heating': return heatingId;
+      case 'Cooling': return coolingId;
+      case 'Motion Detectors': return motionDetectorsId;
+      default: return -1; // Hibakezelés
+    }
+  }
+
 
 
 
@@ -213,21 +214,12 @@ class _MainNavigationState extends State<MainNavigation> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(Icons.local_fire_department, color: _currentIndex == 0 ? Colors.blue : Colors.grey),
+              icon: Icon(Icons.dashboard, color: _currentIndex == 0 ? Colors.blue : Colors.grey),
               onPressed: () => _onTabTapped(0),
             ),
             IconButton(
-              icon: Icon(Icons.lightbulb, color: _currentIndex == 1 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(1),
-            ),
-            const SizedBox(width: 40),
-            IconButton(
-              icon: Icon(Icons.water, color: _currentIndex == 3 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(3),
-            ),
-            IconButton(
-              icon: Icon(Icons.settings, color: _currentIndex == 4 ? Colors.blue : Colors.grey),
-              onPressed: () => _onTabTapped(4),
+              icon: Icon(Icons.settings, color: _currentIndex == 1 ? Colors.blue : Colors.grey),
+              onPressed: () => _onTabTapped(1), // Helyes index
             ),
           ],
         ),
@@ -258,7 +250,6 @@ class _MainNavigationState extends State<MainNavigation> {
         roomData: roomData['Bedroom']!,
         onToggleSwitch: _toggleSwitch,
       ),
-      ControlWidget(onToggle: _toggleControlSwitch), // Új widget itt kerül hozzáadásra
     ];
 
     return ReorderableListView(
@@ -351,11 +342,25 @@ class RoomWidget extends StatelessWidget {
         return Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+          child: Container(
+            height: 290, // Fix magasság a kártya számára
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Expanded( // Üres tér az ikon előtt
+                  child: SizedBox(),
+                ),
+                GestureDetector(
+                  onTap: () => onToggleSwitch(roomName),
+                  child: Icon(
+                    Icons.lightbulb,
+                    size: 40,
+                    color: isSwitchOn ? Colors.yellow : Colors.grey,
+                  ),
+                ),
+                Expanded( // Üres tér az ikon után
+                  child: SizedBox(),
+                ),
                 Text(
                   roomName,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -389,14 +394,6 @@ class RoomWidget extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () => onToggleSwitch(roomName),
-                  child: Icon(
-                    Icons.lightbulb,
-                    size: 40,
-                    color: isSwitchOn ? Colors.yellow : Colors.grey,
-                  ),
-                ),
               ],
             ),
           ),
@@ -578,19 +575,26 @@ class ControlWidget extends StatelessWidget {
           _buildSwitchRow('Living Room Windows', Icons.window),
           _buildSwitchRow('Bedroom Windows', Icons.window),
           _buildSwitchRow('Shutters', Icons.shutter_speed),
-          _buildSwitchRow('Vacuum', Icons.cleaning_services),
-          _buildSwitchRow('Power Cut', Icons.power_off),
           _buildSwitchRow('Garage Door', Icons.garage),
+          _buildSwitchRow('Power Cut', Icons.power_off),
+          _buildSwitchRow('Outside Lighting', Icons.lightbulb_outline),
           _buildSwitchRow('Vacation Mode', Icons.beach_access),
           _buildSwitchRow('Security System', Icons.security),
+          _buildSwitchRow('Coffee Machine', Icons.coffee),
+          _buildSwitchRow('Garden Watering', Icons.grass),
+          _buildSwitchRow('Car Charging', Icons.electric_car),
+          _buildSwitchRow('Heating', Icons.whatshot),
+          _buildSwitchRow('Cooling', Icons.ac_unit),
+          _buildSwitchRow('Motion Detectors', Icons.motion_photos_on),
         ],
       ),
     );
   }
 
   Widget _buildSwitchRow(String name, IconData icon) {
+    final switchState = switchStates[name] ?? ValueNotifier(false); // Biztonságos fallback
     return ValueListenableBuilder<bool>(
-      valueListenable: switchStates[name]!,
+      valueListenable: switchState,
       builder: (context, value, _) {
         return ListTile(
           leading: Icon(icon, size: 30, color: value ? Colors.green : Colors.grey),
@@ -605,6 +609,7 @@ class ControlWidget extends StatelessWidget {
   }
 }
 
+
 // Kapcsolók kezelése a főosztályban
 Future<void> _toggleControlSwitch(String controlName) async {
   int switchId;
@@ -618,20 +623,38 @@ Future<void> _toggleControlSwitch(String controlName) async {
     case 'Shutters':
       switchId = shuttersSwitchId;
       break;
-    case 'Vacuum':
-      switchId = vacuumSwitchId;
+    case 'Garage Door':
+      switchId = garageDoorSwitchId;
       break;
     case 'Power Cut':
       switchId = powerCutSwitchId;
       break;
-    case 'Garage Door':
-      switchId = garageDoorSwitchId;
+    case 'Outside Lighting':
+      switchId = outsideLighting;
       break;
     case 'Vacation Mode':
       switchId = vacationModeSwitchId;
       break;
     case 'Security System':
       switchId = securitySystemSwitchId;
+      break;
+    case 'Coffee Machine':
+      switchId = coffeMachineId;
+      break;
+    case 'Garden Watering':
+      switchId = gadrenWateringId;
+      break;
+    case 'Car Charging':
+      switchId = carChargingId;
+      break;
+    case 'Heating':
+      switchId = heatingId;
+      break;
+    case 'Cooling':
+      switchId = coolingId;
+      break;
+    case 'Motion Detectors':
+      switchId = motionDetectorsId;
       break;
     default:
       print('Unknown control name: $controlName');

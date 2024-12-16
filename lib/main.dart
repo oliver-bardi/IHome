@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';
 import 'screens/settings_screen.dart';
-import 'screens/home_screen.dart'; // Feltételezve, hogy van egy főképernyő (HomeScreen)
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegistrationScreen(),
         '/settings': (context) => SettingsScreen(),
-        '/home': (context) => HomeScreen(), // Főképernyő például bejelentkezés után
       },
     );
   }

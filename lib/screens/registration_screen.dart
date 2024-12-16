@@ -50,14 +50,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Regisztráció')),
+      appBar: AppBar(title: const Text('Registration')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Teljes név'),
+              decoration: const InputDecoration(labelText: 'Name'),
             ),
             TextField(
               controller: _emailController,
@@ -65,17 +65,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Jelszó'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             TextField(
               controller: _confirmPasswordController,
-              decoration: const InputDecoration(labelText: 'Jelszó megerősítése'),
+              decoration: const InputDecoration(labelText: 'Password again'),
               obscureText: true,
             ),
             ElevatedButton(
               onPressed: registerUser,
-              child: const Text('Regisztráció'),
+              child: const Text('Registration'),
             ),
           ],
         ),

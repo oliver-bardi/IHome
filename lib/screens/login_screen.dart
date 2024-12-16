@@ -50,34 +50,44 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Bejelentkezés')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Jelszó'),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              onPressed: loginUser,
-              child: const Text('Bejelentkezés'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RegistrationScreen()),
-                );
-              },
-              child: const Text('Regisztráció'),
-            ),
-          ],
+      appBar: AppBar(title: const Text('Login')),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Kép hozzáadása az oldal tetejére
+              Image.asset(
+                'assets/home.png',
+                height: 150, // Kép magassága
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: loginUser,
+                child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RegistrationScreen()),
+                  );
+                },
+                child: const Text('Registration'),
+              ),
+            ],
+          ),
         ),
       ),
     );
